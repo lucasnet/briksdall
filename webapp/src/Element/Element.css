@@ -1,0 +1,20 @@
+.Element{
+    width: 200px;
+    border: 1px solid darkgreen;
+    text-align: left;
+    padding: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    background-color: lightgreen;
+    color:darkgreen;
+    display: inline-block;
+}
+.Command{
+    display: inline-block;
+    background-color: lightgreen;
+    color:darkgreen;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+    border: 1px solid darkgreen;
+}
