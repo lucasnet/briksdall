@@ -1,0 +1,15 @@
+.Content{
+    background-color: green;
+}
+
+.subtitle{
+    font-size: small;
+    font-style: italic;   
+}
+
+.Header {
+    
+    height: 100%;
+    padding: 10px;
+}
+

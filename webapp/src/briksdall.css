@@ -1,0 +1,78 @@
+
+
+.table-subtitle{
+    font-size: small;
+    font-style: italic; 
+    padding: 10px;  
+}
+
+.table{
+    /*background: transparent url('./img/graph_paper.jpg') repeat-x scroll left bottom;	*/
+    background: url('./img/graph_paper.jpg');
+    color: darkgreen !important;
+}
+
+.table th{
+    font-weight: bold;
+    /* background-color: mediumblue; */
+}
+
+.table th button{    
+    background-color: rgb(244, 255, 226);
+    color: darkgreen;
+    border-color: darkgreen;
+}
+.col-actions{
+    width: 10%;
+}
+
+.td-currency{
+    text-align: right;
+    font-weight: lighter;
+    font-size: small;
+}
+
+
+
+.xxxtable th span{   
+    color: darkgreen !important;    ;
+}
+
+
+.xxxtable tr button{
+    color: darkgreen !important;
+}
+
+
+
+
+
+.xxxpanel div.row
+{
+    padding: 10px;
+    color: darkgreen;    
+}
+.xxxpanel div.detail-texture{
+    background: transparent url('./img/graph_paper.jpg') repeat-x scroll left bottom;	    
+}
+.xxxpanel div.detail-color{
+    background-color: #f9fef0;	    
+}
+
+
+.textarea {
+    resize: none;
+}
+
+.xxxpanel-footer {
+    background: transparent url('./img/graph_paper.jpg') repeat-x scroll left bottom;	 
+}
+.xxxpanel-footer button{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;   
+    color:darkgreen;
+    background-color: rgb(244, 255, 226);
+    border: 1px solid darkgreen;
+}
+.xxxpanel-footer span{
+    color: darkgreen !important;
+}
