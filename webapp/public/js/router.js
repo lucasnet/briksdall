@@ -1,10 +1,29 @@
 
 class Router{
+
+    routerList = {
+        "Gruppi":{
+            "template"   : "/BLancio/gruppi",
+            "controller" : "/BLancio/cGruppi",
+            "presenter"  : "\\BLancio\\vGruppi",
+            "model"      : "\\BLancio\\mGruppi"
+        },
+        "Sottogruppi":{
+            "template"   : "\\BLancio\\gruppi",
+            "controller" : "\\BLancio\\cGruppi",
+            "presenter"  : "\\BLancio\\vGruppi",
+            "model"      : "\\BLancio\\mGruppi"
+        }
+    };
+
     constructor(){}
 
-    async Route(params){        
-        var html_content = await this.#getTemplate(params.id);
-        $("#main_content").html(html_content);
+    async Route(params){    
+        var pageID = params.id;
+        var route_elements = this.routerList[pageID];
+
+        let controller = await import(route_elements.controller);
+        controller.init(route_elements);       
     }
 
 
@@ -26,7 +45,7 @@ class Router{
         return html_content;
     }
 
-    // Example POST method implementation:
+    
     async #getData(url = '') {       
         const response = await fetch(url);
         const data = await response.text();

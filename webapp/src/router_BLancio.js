@@ -22,6 +22,10 @@ router.get('/', function (req, res) {
 router.get('/gruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/gruppi.html'));
 });
+router.get('/cgruppi', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_controller.js'));
+});
+
 // define the SOTTOGRUPPI route
 router.get('/sottogruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/sottogruppi.html'));
