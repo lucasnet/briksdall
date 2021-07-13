@@ -6,7 +6,7 @@ class Router{
             "template"   : "/BLancio/gruppi",
             "controller" : "/BLancio/cGruppi",
             "presenter"  : "\\BLancio\\vGruppi",
-            "model"      : "\\BLancio\\mGruppi"
+            "model"      : "/BLancio/mGruppi"
         },
         "Sottogruppi":{
             "template"   : "\\BLancio\\gruppi",
