@@ -6,9 +6,9 @@ export class Gruppi_Model{
     _password = '';
     
     // constructor
-    constructor(params){
-        this._username = params.username;
-        this._password = params.password;
+    constructor(auth){
+        this._username = auth.username;
+        this._password = auth.password;
     }
 
 

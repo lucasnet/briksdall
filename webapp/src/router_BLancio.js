@@ -28,6 +28,9 @@ router.get('/cgruppi', function (req, res) {
 router.get('/mgruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_model.js'));
 });
+router.get('/pgruppi', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_presenter.js'));
+});
 
 // define the SOTTOGRUPPI route
 router.get('/sottogruppi', function (req, res) {

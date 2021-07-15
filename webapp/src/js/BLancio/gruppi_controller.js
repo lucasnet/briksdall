@@ -1,24 +1,28 @@
 
-export async function init(route_elements){
-    const params = {
-        username: "",
-        password: ""
-    };
+export class Gruppi_Controller{
 
-    const {Gruppi_Model} = await import(route_elements.model);
-    // const presenter = await import(route_elements.presenter);
-    
-    const model = new Gruppi_Model(params);
-    const rawData = await model.Gruppi_List();
+    // fields
+    _auth = null;           //{username : "", password : "" };
+    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
 
-    var html_content = await getData(route_elements.template);
-    $("#main_content").html(html_content);
+    // constructor
+    constructor(auth, route_elements){
+        this._auth = auth;
+        this._route_elements = route_elements;
+    }
+
+
+    async Init(){
+        const {Gruppi_Model} = await import(this._route_elements.model);
+        const {Gruppi_Presenter} = await import(this._route_elements.presenter);
+        
+        const model = new Gruppi_Model(this._auth);
+        const rawData = await model.Gruppi_List();
+
+        const presenter = new Gruppi_Presenter(this._route_elements);
+        presenter.ShowList(rawData);
+    }
 }
 
 
 
-async function getData(url = '') {       
-    const response = await fetch(url);
-    const data = await response.text();
-    return data; 
-}

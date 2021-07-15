@@ -1,11 +1,16 @@
 
 class Router{
 
-    routerList = {
+    auth = {
+        username: "",
+        password: ""
+    };
+
+    routesList = {
         "Gruppi":{
             "template"   : "/BLancio/gruppi",
             "controller" : "/BLancio/cGruppi",
-            "presenter"  : "\\BLancio\\vGruppi",
+            "presenter"  : "/BLancio/pGruppi",
             "model"      : "/BLancio/mGruppi"
         },
         "Sottogruppi":{
@@ -20,10 +25,14 @@ class Router{
 
     async Route(params){    
         var pageID = params.id;
-        var route_elements = this.routerList[pageID];
+        var route_elements = this.routesList[pageID];
 
-        let controller = await import(route_elements.controller);
-        controller.init(route_elements);       
+        //let ctrl = await import(route_elements.controller);
+        //controller.init(route_elements, this.auth);
+
+        let {Gruppi_Controller} = await import(route_elements.controller);
+        const controller = new Gruppi_Controller(this.auth, route_elements);
+        const rawData = await controller.Init();
     }
 
 
