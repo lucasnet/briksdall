@@ -22,6 +22,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/src/pages/index.html'));
   });
 
+app.get('/error', (req, res) => {
+    logger.Log('Request -> Generic Error'); 
+    res.sendFile(path.join(__dirname, '/src/templates/genericError.html'));
+  });
+
   app.get('/adminlte', (req, res) => {
     logger.Log('Request -> Admin LTE'); 
     res.sendFile(path.join(__dirname, '/src/pages/adminlte.html'));

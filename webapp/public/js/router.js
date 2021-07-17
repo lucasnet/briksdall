@@ -11,7 +11,8 @@ class Router{
             "template"   : "/BLancio/gruppi",
             "controller" : "/BLancio/cGruppi",
             "presenter"  : "/BLancio/pGruppi",
-            "model"      : "/BLancio/mGruppi"
+            "model"      : "/BLancio/mGruppi",
+            "error"      : "/error"
         },
         "Sottogruppi":{
             "template"   : "\\BLancio\\gruppi",

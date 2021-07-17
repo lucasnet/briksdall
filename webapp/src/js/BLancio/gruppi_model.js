@@ -50,7 +50,9 @@ export class Gruppi_Model{
           body: data // body data type must match "Content-Type" header
         });
 
-        const returned_data = await response.text();
+        const soap_data = await response.text();                        // soap data (with envelope)
+        const xml_soap_data = $.parseXML(soap_data)                     // convert soap data in xml document
+        const returned_data = xml_soap_data.children[0].textContent;    // get content (data without envelope)
         return returned_data; 
     }
 
