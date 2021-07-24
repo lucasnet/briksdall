@@ -2,8 +2,8 @@
 class Router{
 
     auth = {
-        username: "",
-        password: ""
+        username: "luca",
+        password: "lucadsnet"
     };
 
     routesList = {
