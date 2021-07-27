@@ -20,7 +20,36 @@ export class Gruppi_Presenter{
 
         if (responseResult.codice == 0){
             $('#dataTable').DataTable({
-                data: responseData
+                data: responseData,
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": 1,
+                        "render": function ( data, type, row ) {
+                            return '<h5>' + row[1] + '</h5>';
+                        }
+                    },
+                    {
+                        "targets": 2,
+                        "searchable": false,
+                        "orderable": false,
+                        "render": function ( data, type, row ) {
+                                        const edit_url = '/gruppi/' + row[0];
+                                        const edit = '<a href="' + edit_url + '" class="btn btn-light btn-icon-split">'
+                                                        + '<span class="icon text-white-50">'
+                                                        + '<i class="fas fa-edit"></i>'
+                                                        + '</span>'
+                                                        + '<span class="text">Modifica</span>'
+                                                        + '</a>';
+
+                                        return edit;
+                                    }
+                    }
+                ]               
             });
         }
     }
