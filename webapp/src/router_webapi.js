@@ -9,6 +9,19 @@ const logger = new Logger();
 
 const urlWebAPI = 'http://192.168.1.33:81/ws';
 
+
+// proxy error handler
+apiProxy.on('error', function (err, req, res) {
+
+  logger.Log('ERROR: ' + req.url + ' ' + err);
+  
+  res.writeHead(500, {
+    'Content-Type': 'text/plain'
+  });
+
+  res.end('Something went wrong. And we are reporting a custom error message.\r\n' + err);
+});
+
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
   logger.Log('Request webapi: ' + req.url);

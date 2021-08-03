@@ -12,7 +12,7 @@ export class Gruppi_Controller{
     }
 
 
-    async Init(){
+    async Init(notifyDetail){
         const {Gruppi_Model} = await import(this._route_elements.model);
         const {Gruppi_Presenter} = await import(this._route_elements.presenter);
         
@@ -24,10 +24,10 @@ export class Gruppi_Controller{
         const responseData = this.#getStructuredData(responseRawData);
 
         const presenter = new Gruppi_Presenter(this._route_elements);
-        presenter.ShowList(responseResult, responseData);
+        presenter.ShowList(responseResult, responseData, notifyDetail);
     }
 
-
+   
 
     // Private Section
 

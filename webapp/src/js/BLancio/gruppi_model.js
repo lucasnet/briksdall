@@ -37,23 +37,30 @@ export class Gruppi_Model{
     async #postData(url = '', data = {}) {
         // Default options are marked with *
         const response = await fetch(url, {
-          method: 'POST', // *GET, POST, PUT, DELETE, etc.
-          mode: 'cors', // no-cors, *cors, same-origin
-          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: 'same-origin', // include, *same-origin, omit
-          headers: {
-            //'Content-Type': 'application/json'
+          method: 'POST',               // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors',                 // no-cors, *cors, same-origin
+          cache: 'no-cache',            // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin',   // include, *same-origin, omit
+          headers: {           
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          redirect: 'follow', // manual, *follow, error
+          redirect: 'follow',           // manual, *follow, error
           referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-          body: data // body data type must match "Content-Type" header
+          body: data                    // body data type must match "Content-Type" header
         });
 
         const soap_data = await response.text();                        // soap data (with envelope)
-        const xml_soap_data = $.parseXML(soap_data)                     // convert soap data in xml document
-        const returned_data = xml_soap_data.children[0].textContent;    // get content (data without envelope)
-        return returned_data; 
+        const status = response.status;                                 // http response status
+
+        if (status == 200){
+            // no problem...
+            const xml_soap_data = $.parseXML(soap_data)                     // convert soap data in xml document
+            const returned_data = xml_soap_data.children[0].textContent;    // get content (data without envelope)
+            return returned_data; 
+        }else{
+            // an error occurs, probably 500
+            throw soap_data;
+        }
     }
 
     // request ID per le chiamate a web services

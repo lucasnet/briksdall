@@ -3,10 +3,10 @@ export class Gruppi_Presenter{
     _route_elements = null; // {model : "", presenter : "", contoller: "", template : "", error : ""}
 
     constructor(route_elements){
-        this._route_elements = route_elements;
+        this._route_elements = route_elements;       
     }
 
-    async ShowList(responseResult, responseData){
+    async ShowList(responseResult, responseData, notifyDetail){
        
         const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
 
@@ -37,19 +37,23 @@ export class Gruppi_Presenter{
                         "targets": 2,
                         "searchable": false,
                         "orderable": false,
-                        "render": function ( data, type, row ) {
-                                        const edit_url = '/gruppi/' + row[0];
-                                        const edit = '<a href="' + edit_url + '" class="btn btn-light btn-icon-split">'
+                        "render": function ( data, type, row ) {                                        
+                                        const edit = '<button class="btn btn-light btn-icon-split" '
+                                                        + 'id="' + row[0] + '"> '                                                    
                                                         + '<span class="icon text-white-50">'
                                                         + '<i class="fas fa-edit"></i>'
                                                         + '</span>'
                                                         + '<span class="text">Modifica</span>'
-                                                        + '</a>';
+                                                        + '</button>';
 
                                         return edit;
                                     }
                     }
                 ]               
+            });
+
+            $('#dataTable tbody').on('click', 'td button', function (){
+                notifyDetail(this.id);
             });
         }
     }

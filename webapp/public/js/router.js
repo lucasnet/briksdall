@@ -1,5 +1,5 @@
 
-class Router{
+class Router {
 
     auth = {
         username: "luca",
@@ -28,13 +28,30 @@ class Router{
         var pageID = params.id;
         var route_elements = this.routesList[pageID];
 
-        //let ctrl = await import(route_elements.controller);
-        //controller.init(route_elements, this.auth);
+        switch (pageID){
 
-        let {Gruppi_Controller} = await import(route_elements.controller);
-        const controller = new Gruppi_Controller(this.auth, route_elements);
-        const rawData = await controller.Init();
+            case "Gruppi":
+                let {Gruppi_Controller} = await import(route_elements.controller);
+                const controller = new Gruppi_Controller(this.auth, route_elements);
+                const rawData = await controller.Init(this.#notify_BLancio_GruppiDetail);
+                break;
+
+            case "Gruppi_Detail":
+                const elementID = params.element;
+                alert(elementID);
+                break;
+
+            default:
+                break;
+        }
     }
+
+    
+    #notify_BLancio_GruppiDetail(id){
+        router.Route({id: "Gruppi_Detail", element: id})
+    }
+
+
 
 
 
