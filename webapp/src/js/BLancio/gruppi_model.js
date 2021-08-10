@@ -1,7 +1,8 @@
 export class Gruppi_Model{
 
     // fields
-    _urlGruppiList = '/webapi/blancio.asmx/Gruppi_Elenco';
+    _urlGruppiList   = '/webapi/blancio.asmx/Gruppi_Elenco';
+    _urlGruppiDetail = '/webapi/blancio.asmx/Gruppo_Dettaglio_GET';
     _username = '';
     _password = '';
     
@@ -21,8 +22,13 @@ export class Gruppi_Model{
         )
         return returnedData;
     }
-    async Gruppi_Detail(){
-
+    async Gruppi_Detail(elementID){
+        const strXml = this.#getXml_Detail(elementID); 
+        const returnedData = await this.#postData(
+            this._urlGruppiDetail,
+            'strxmlIN=' + strXml
+        )
+        return returnedData;
     }
     async Gruppi_Set(){
 
@@ -98,5 +104,18 @@ export class Gruppi_Model{
                       "</request>";
         return strXml;
     }
-}   
+    #getXml_Detail(elementID){
+        const strXml = "<?xml version='1.0' encoding='utf-8' ?>" +
+                   "<request ID='" + this.#getRequestID() + "'>" +
+                     "<auth>" +
+                       "<username>" + this._username + "</username>" +
+                       "<password>" + this._password + "</password>" +
+                     "</auth>" +
+                     "<data>" +
+                       "<codice>" + elementID + "</codice>" +                       
+                     "</data>" +
+                  "</request>";
+        return strXml;
+    }
 
+}

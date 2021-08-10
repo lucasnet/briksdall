@@ -14,7 +14,7 @@ const urlWebAPI = 'http://192.168.1.33:81/ws';
 apiProxy.on('error', function (err, req, res) {
 
   logger.Log('ERROR: ' + req.url + ' ' + err);
-  
+
   res.writeHead(500, {
     'Content-Type': 'text/plain'
   });
@@ -31,6 +31,9 @@ router.use(function timeLog (req, res, next) {
 
 router.all("/blancio.asmx/Gruppi_Elenco", function(req, res) {    
     apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Gruppo_Dettaglio_GET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
 });
 
 //others

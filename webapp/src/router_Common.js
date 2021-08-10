@@ -7,53 +7,22 @@ const logger = new Logger();
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
-  logger.Log('Request BLancio: ' + req.url);
+  logger.Log('Request Common: ' + req.url);
   next()
 });
 
 
-// define the home page route
-router.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/main.html'));
-})
+//// define the home page route
+//router.get('/', function (req, res) {
+//    res.sendFile(path.join(__dirname, '/common/modals/main.html'));
+//})
 
 
-// define the GRUPPI routes
-router.get('/gruppi', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/gruppi.html'));
-});
-router.get('/gruppo', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/gruppo.html'));
-});
-router.get('/cgruppi', function (req, res) {
-    res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_controller.js'));
-});
-router.get('/cgruppo', function (req, res) {
-    res.sendFile(path.join(__dirname, '/js/BLancio/gruppo_controller.js'));
-});
-router.get('/mgruppi', function (req, res) {
-    res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_model.js'));
-});
-router.get('/pgruppi', function (req, res) {
-    res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_presenter.js'));
+// define the MODALS routes
+router.get('/modal_confirm', function (req, res) {
+    res.sendFile(path.join(__dirname, '/templates/common/modals/confirm.html'));
 });
 
-// define the SOTTOGRUPPI route
-router.get('/sottogruppi', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/sottogruppi.html'));
-});
-// define the SUPERMERCATI route
-router.get('/supermercati', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/supermercati.html'));
-});
-// define the RISORSE route
-router.get('/risorse', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/risorse.html'));
-});
-// define the SETUP PREVISIONE route
-router.get('/previsione_setup', function (req, res) {
-    res.sendFile(path.join(__dirname, '/templates/BLancio/previsione_setup.html'));
-});
 
 router.get('*', function(req, res){
     res.sendFile(path.join(__dirname, '/templates/BLancio/404.html'));

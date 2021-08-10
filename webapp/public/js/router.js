@@ -14,6 +14,13 @@ class Router {
             "model"      : "/BLancio/mGruppi",
             "error"      : "/error"
         },
+        "Gruppi_Detail":{
+            "template"   : "/BLancio/gruppo",
+            "controller" : "/BLancio/cGruppo",
+            "presenter"  : "/BLancio/pGruppi",
+            "model"      : "/BLancio/mGruppi",
+            "error"      : "/error"
+        },
         "Sottogruppi":{
             "template"   : "\\BLancio\\gruppi",
             "controller" : "\\BLancio\\cGruppi",
@@ -27,18 +34,21 @@ class Router {
     async Route(params){    
         var pageID = params.id;
         var route_elements = this.routesList[pageID];
+        let controller = null;
+        let rawData = null;
 
         switch (pageID){
 
             case "Gruppi":
                 let {Gruppi_Controller} = await import(route_elements.controller);
-                const controller = new Gruppi_Controller(this.auth, route_elements);
-                const rawData = await controller.Init(this.#notify_BLancio_GruppiDetail);
+                controller = new Gruppi_Controller(this.auth, route_elements);
+                rawData = await controller.Init(this.#notify_BLancio_GruppiDetail);
                 break;
 
             case "Gruppi_Detail":
-                const elementID = params.element;
-                alert(elementID);
+                const {Gruppo_Controller} = await import(route_elements.controller);
+                controller = new Gruppo_Controller(this.auth, route_elements, params.element);
+                rawData = await controller.Init(this.#notify_BLancio_GruppiList);
                 break;
 
             default:
@@ -49,6 +59,9 @@ class Router {
     
     #notify_BLancio_GruppiDetail(id){
         router.Route({id: "Gruppi_Detail", element: id})
+    }
+    #notify_BLancio_GruppiList(){
+        router.Route({id: "Gruppi"})
     }
 
 
