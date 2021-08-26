@@ -22,6 +22,12 @@ router.use(function timeLog (req, res, next) {
 router.get('/modal_confirm', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/common/modals/confirm.html'));
 });
+router.get('/modal_ok', function (req, res) {
+  res.sendFile(path.join(__dirname, '/templates/common/modals/ok.html'));
+});
+router.get('/modal_error', function (req, res) {
+  res.sendFile(path.join(__dirname, '/templates/common/modals/error.html'));
+});
 
 
 router.get('*', function(req, res){

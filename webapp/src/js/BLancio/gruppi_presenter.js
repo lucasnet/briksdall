@@ -2,6 +2,8 @@ export class Gruppi_Presenter{
     
     _route_elements = null; // {model : "", presenter : "", contoller: "", template : "", error : ""}
     _modalconfirm = "/Common/modal_confirm";
+    _modalok      = "/Common/modal_ok";
+    _modalerror   = "/Common/modal_error";
 
     constructor(route_elements){
         this._route_elements = route_elements;       
@@ -59,7 +61,7 @@ export class Gruppi_Presenter{
         }
     }
 
-    async ShowDetail(responseResult, responseData, events){
+    async ShowDetail(responseResult, responseData, events, sender){
 
         let html_modalconfirm = await this.#getData(this._modalconfirm);
 
@@ -80,7 +82,8 @@ export class Gruppi_Presenter{
 
             // events
             $("#btnSave").on("click", function (){
-                events.save({
+                events.save(sender,
+                            {                             
                              codice      : $("#txtCodice").val(), 
                              descrizione : $("#txtDescrizione").val( )
                             });
@@ -107,6 +110,32 @@ export class Gruppi_Presenter{
             });
         }
     }
+
+    async ShowModalResponse(responseResult, events){
+        if (responseResult.codice == 0){
+
+            let html_modalok = await this.#getData(this._modalok);
+            $("#modal_ok").html(html_modalok);
+
+            $('#okModal').modal('show');
+            $('#chiudibox').unbind("click").click(function () {
+                events.list();
+            });
+            $('#xbox').unbind("click").click(function () {
+                events.list();
+            });
+
+        }else{
+            
+            let html_modalerror = await this.#getData(this._modalerror);
+            $("#modal_error").html(html_modalerror);
+
+            $('#errorModal').modal('show');
+            $('#showErrorCode').text(responseResult.codice);
+            $('#showErrorMsg').text(responseResult.descrizione);
+        }
+    }
+
 
 
     // Private Section

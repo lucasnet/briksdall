@@ -35,6 +35,9 @@ router.all("/blancio.asmx/Gruppi_Elenco", function(req, res) {
 router.all("/blancio.asmx/Gruppo_Dettaglio_GET", function(req, res) {    
   apiProxy.web(req, res, {target: urlWebAPI});
 });
+router.all("/blancio.asmx/Gruppo_Dettaglio_SET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
 
 //others
 router.get('*', function(req, res){

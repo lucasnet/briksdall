@@ -1,3 +1,4 @@
+//import { notify } from "../../router_Common";
 
 export class Gruppo_Controller{
 
@@ -5,6 +6,9 @@ export class Gruppo_Controller{
     _auth = null;           //{username : "", password : "" };
     _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
     _elementID = null;
+    _model = null;
+    _presenter = null;
+    _listDelegate = null;
 
     // constructor
     constructor(auth, route_elements, elementID){
@@ -12,22 +16,27 @@ export class Gruppo_Controller{
         this._route_elements = route_elements;
         this._elementID = elementID;
     }
-
-
+    
+    
     async Init(notifyList){
+
+        this._listDelegate = notifyList;
+
         const {Gruppi_Model} = await import(this._route_elements.model);
+        this._model = new Gruppi_Model(this._auth);
+    
         const {Gruppi_Presenter} = await import(this._route_elements.presenter);
+        this._presenter = new Gruppi_Presenter(this._route_elements);
         
-        const model = new Gruppi_Model(this._auth);
-        let rawData = await model.Gruppi_Detail(this._elementID);
 
-        const responseResult = this.#getResponseResult(rawData);
+        let rawData = await this._model.Gruppi_Detail(this._elementID);
+
+        const responseResult  = this.#getResponseResult(rawData);
         const responseRawData = this.#getResponseRawData(rawData);
-        const responseData = this.#getStructuredData(responseRawData);
+        const responseData    = this.#getStructuredData(responseRawData);
 
-        const presenter = new Gruppi_Presenter(this._route_elements);
-        const events = { save: this.#notifysave, delete: this.#notifydelete, list: notifyList};
-        presenter.ShowDetail(responseResult, responseData, events);
+        const events = { save: await this.#notifysave, delete: this.#notifydelete, list: notifyList};
+        this._presenter.ShowDetail(responseResult, responseData, events, this);
     }
 
    
@@ -48,9 +57,9 @@ export class Gruppo_Controller{
                 codice : codice,
                 descrizione : descrizione
             };
-     }
+    }
 
-     #getResponseRawData(rawdata){
+    #getResponseRawData(rawdata){
         const xmlDoc = $.parseXML(rawdata);        
        
         let data = "";
@@ -59,9 +68,9 @@ export class Gruppo_Controller{
         });
 
         return data;
-     }
+    }
 
-     #getStructuredData(responserawdata){
+    #getStructuredData(responserawdata){
         const xmlDoc = $.parseXML(responserawdata);        
        
         let loe = [];
@@ -77,15 +86,21 @@ export class Gruppo_Controller{
         });
 
         return {codice, descrizione};
-     }
+    }
 
-     #notifysave(data){
-         alert("save!");
-     }
+    async #notifysave(sender, data){        
+                
+        let rawData = await sender._model.Gruppi_Set(data);
+        const responseResult = sender.#getResponseResult(rawData);
 
-     #notifydelete(id){
+        const events = { list: sender._listDelegate};
+        sender._presenter.ShowModalResponse(responseResult, events);
+    }
+
+    #notifydelete(id){
         alert("delete!");
     }
+
 }
 
 
