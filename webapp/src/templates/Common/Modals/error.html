@@ -1,25 +1,26 @@
-<div id="errorModal" class="modal fade">
-    <div class="modal-dialog">
+<div id="errorModal" class="modal fade" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
                 <h4 class="modal-title">ERRORE</h4>
+                <button type="button" class="close" id="xbox" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body">               
                 <div class="row">
                     <div class="col-md-3">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <h1><i class="fas fa-exclamation-circle"></i></h1>
                     </div>
                     <div id="msgError" class="col-md-9">
-                       <h3><span id="showErrorMsg"></span></h3>
+                        <h3><span id="showErrorMsg"></span></h3>
                         <h5>Codice Errore: <span id="showErrorCode"></span></h5>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer modal-footer-custom">
-                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Chiudi</button>
+            <div class="modal-footer">
+                <button id="chiudibox" type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>

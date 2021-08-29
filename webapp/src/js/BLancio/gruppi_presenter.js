@@ -100,7 +100,10 @@ export class Gruppi_Presenter{
 
                 $('#confermIt').click(function () {
 
-                    events.delete($("#txtCodice").val());
+                    events.delete(
+                                    sender,
+                                    $("#txtCodice").val()
+                                 );
 
                 });
             });
@@ -118,12 +121,15 @@ export class Gruppi_Presenter{
             $("#modal_ok").html(html_modalok);
 
             $('#okModal').modal('show');
-            $('#chiudibox').unbind("click").click(function () {
-                events.list();
+            $('#chiudibox').off("click").click(function () {
+                $('#okModal').modal('hide');               
             });
-            $('#xbox').unbind("click").click(function () {
-                events.list();
+            $('#xbox').off("click").click(function () {
+                $('#okModal').modal('hide');
             });
+            $('#modal_ok').on('hidden.bs.modal', function (e) {                
+                events.list();
+              })
 
         }else{
             

@@ -35,7 +35,7 @@ export class Gruppo_Controller{
         const responseRawData = this.#getResponseRawData(rawData);
         const responseData    = this.#getStructuredData(responseRawData);
 
-        const events = { save: await this.#notifysave, delete: this.#notifydelete, list: notifyList};
+        const events = { save: await this.#notifysave, delete: await this.#notifydelete, list: notifyList};
         this._presenter.ShowDetail(responseResult, responseData, events, this);
     }
 
@@ -97,8 +97,12 @@ export class Gruppo_Controller{
         sender._presenter.ShowModalResponse(responseResult, events);
     }
 
-    #notifydelete(id){
-        alert("delete!");
+    async #notifydelete(sender, elementID){
+        let rawData = await sender._model.Gruppi_Delete(elementID);
+        const responseResult = sender.#getResponseResult(rawData);
+
+        const events = { list: sender._listDelegate};
+        sender._presenter.ShowModalResponse(responseResult, events);
     }
 
 }
