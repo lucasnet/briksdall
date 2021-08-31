@@ -1,14 +1,32 @@
+//
+// Presenter for Gruppo / Gruppi modules
+//
 export class Gruppi_Presenter{
     
+    // fields
     _route_elements = null; // {model : "", presenter : "", contoller: "", template : "", error : ""}
-    _modalconfirm = "/Common/modal_confirm";
-    _modalok      = "/Common/modal_ok";
-    _modalerror   = "/Common/modal_error";
+    _modalconfirm = "/Common/modal_confirm"; // template for modal confirm      
+    _modalok      = "/Common/modal_ok";      // template for modal ok
+    _modalerror   = "/Common/modal_error";   // template for modal error
 
+
+
+    // Constructor.
+    // set up initial values.
+    // params: route_elements. Routing elements (model, controller, presenter, templates)
     constructor(route_elements){
         this._route_elements = route_elements;       
     }
 
+
+
+    // public methods
+
+    // ShowList. Shows Gruppi list.
+    // params:
+    // - responseResult: web service response result (json format)
+    // - responseData: web service response data (xml string format)
+    // - notifyDetail: delegate for element "click" ("detail" request) 
     async ShowList(responseResult, responseData, notifyDetail){
        
         const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
@@ -52,15 +70,25 @@ export class Gruppi_Presenter{
                                         return edit;
                                     }
                     }
-                ]               
+                ],
+                "order": [[ 1, "asc" ]]            
             });
 
             $('#dataTable tbody').on('click', 'td button', function (){
                 notifyDetail(this.id);
             });
+            $('#btnNew').on('click', function (){
+                notifyDetail(0);
+            });
         }
     }
 
+    // ShowDetail. Shows Gruppo element.
+    // params:
+    // - responseResult: web service response result (json format)
+    // - responseData: web service response data (xml string format)
+    // - events: list of delegates (save, delete, list)
+    // - sender: object owner
     async ShowDetail(responseResult, responseData, events, sender){
 
         let html_modalconfirm = await this.#getData(this._modalconfirm);
@@ -114,6 +142,11 @@ export class Gruppi_Presenter{
         }
     }
 
+    // ShowModalResponse. Shows Ok/Error modal.
+    // params:
+    // - responseResult: web service response result (json format).
+    //                  if responseResult.Codice == 0 shows OK modal, else shows Error modal.
+    // - events: list of delegates (list). When OK modal closed, fires List delegate.
     async ShowModalResponse(responseResult, events){
         if (responseResult.codice == 0){
 

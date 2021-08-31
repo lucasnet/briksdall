@@ -1,5 +1,6 @@
-//import { notify } from "../../router_Common";
-
+//
+// Controller for Gruppo module
+//
 export class Gruppo_Controller{
 
     // fields
@@ -10,7 +11,12 @@ export class Gruppo_Controller{
     _presenter = null;
     _listDelegate = null;
 
-    // constructor
+
+    // Constructor. Set up initial values.
+    // Params:
+    // - auth: web services authorization fields (username, password)
+    // - route_elements: routing elements (model, presenter, controller, template)
+    // - elementID: current element (ID)
     constructor(auth, route_elements, elementID){
         this._auth = auth;
         this._route_elements = route_elements;
@@ -18,6 +24,12 @@ export class Gruppo_Controller{
     }
     
     
+    // Public Section
+
+    // Init. Initialize Gruppo, showing its detail.
+    // Main engine for handling Gruppo operations (Save, Delete)
+    // Params:
+    // - notifyList: delegate for List (Gruppi list) request.
     async Init(notifyList){
 
         this._listDelegate = notifyList;

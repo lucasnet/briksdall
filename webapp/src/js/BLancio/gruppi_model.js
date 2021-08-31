@@ -1,3 +1,6 @@
+//
+// Interface with Gruppo / Gruppi web services.
+//
 export class Gruppi_Model{
 
     // fields

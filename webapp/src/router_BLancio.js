@@ -38,6 +38,8 @@ router.get('/pgruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_presenter.js'));
 });
 
+
+
 // define the SOTTOGRUPPI route
 router.get('/sottogruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/sottogruppi.html'));

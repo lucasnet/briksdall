@@ -1,17 +1,30 @@
-
+//
+// Controller for Gruppi process
+//
 export class Gruppi_Controller{
 
     // fields
     _auth = null;           //{username : "", password : "" };
     _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
 
-    // constructor
+
+
+    // Constructor. Set up initial values.
+    // Params:
+    // - auth: web services authorization fields (username, password)
+    // - route_elements: routing elements (model, presenter, controller, template)
     constructor(auth, route_elements){
         this._auth = auth;
         this._route_elements = route_elements;
     }
 
 
+
+    // Public Section 
+
+    // Init. Entry point method. Initializes Gruppi process showing Gruppi list.
+    // Params:
+    // - notifyDetail: delegate for Detail event (click on single element in the list)
     async Init(notifyDetail){
         const {Gruppi_Model} = await import(this._route_elements.model);
         const {Gruppi_Presenter} = await import(this._route_elements.presenter);
