@@ -43,6 +43,21 @@ router.all("/blancio.asmx/Gruppo_Dettaglio_DEL", function(req, res) {
     apiProxy.web(req, res, {target: urlWebAPI});
 });
 
+// BLancio -> Sottogruppi
+router.all("/blancio.asmx/Sottogruppi_Elenco", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Sottogruppi_Dettaglio_GET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Sottogruppi_Dettaglio_SET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Sottogruppi_Dettaglio_DEL", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+
+
 
 
 

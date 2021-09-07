@@ -44,6 +44,24 @@ router.get('/pgruppi', function (req, res) {
 router.get('/sottogruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/sottogruppi.html'));
 });
+router.get('/sottogruppo', function (req, res) {
+    res.sendFile(path.join(__dirname, '/templates/BLancio/sottogruppo.html'));
+});
+router.get('/csottogruppi', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/sottogruppi_controller.js'));
+});
+router.get('/csottogruppo', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/sottogruppo_controller.js'));
+});
+router.get('/msottogruppi', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/sottogruppi_model.js'));
+});
+router.get('/psottogruppi', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/sottogruppi_presenter.js'));
+});
+
+
+
 // define the SUPERMERCATI route
 router.get('/supermercati', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/supermercati.html'));

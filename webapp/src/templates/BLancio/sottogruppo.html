@@ -1,0 +1,50 @@
+<h1 class="h3 mb-2 text-gray-800">SOTTOGRUPPI</h1>
+<p class="mb-4">Impostazione dei Sottogruppi di Bilancio.</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Modifica Sottogruppo</h6>
+    </div>
+    <div class="card-body">
+        <div class="panel panel-default">
+            <label for="txtCodice">Codice</label>
+            <input type="text" class="form-control" id="txtCodice" disabled />
+            <br />
+            <label for="txtDescrizione">Descrizione</label>
+            <input type="text" maxlength="100" class="form-control form-control-custom cleanInput" id="txtDescrizione" placeholder="Inserisci la descrizione" />
+            <br />
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="chkSoloMovimenti">
+                <label class="custom-control-label" for="chkSoloMovimenti">Solo Movimenti (il sottogruppo non figura nel bilancio complessivo)</label>
+            </div>
+            <br />
+            <label for="cboGruppi">Gruppo</label>
+            <select class="custom-select rounded-0" id="cboGruppi"></select>
+        </div>
+    </div>
+    <div class="card-footer py-3">
+        <a href="#" class="btn btn-primary btn-icon-split" id="btnSave">
+            <span class="icon text-white-50">
+                <i class="fas fa-save"></i>
+            </span>
+            <span class="text">Salva</span>
+        </a>
+        <a href="#" class="btn btn-warning btn-icon-split" id="btnDelete">
+            <span class="icon text-white-50">
+                <i class="fas fa-trash"></i>
+            </span>
+            <span class="text">Elimina</span>
+        </a>  
+        <a href="#" class="btn btn-secondary btn-icon-split" id="btnBack">
+            <span class="icon text-white-50">
+                <i class="fas fa-backward"></i>
+            </span>
+            <span class="text">Ritorna</span>
+        </a>       
+    </div>
+</div>       
+
+<div id="modal_confirm"></div> 
+<div id="modal_ok"></div> 
+<div id="modal_error"></div> 
+
