@@ -37,6 +37,9 @@ router.get('/mgruppi', function (req, res) {
 router.get('/pgruppi', function (req, res) {
     res.sendFile(path.join(__dirname, '/js/BLancio/gruppi_presenter.js'));
 });
+router.get('/model_base', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/base_model.js'));
+});
 
 
 
