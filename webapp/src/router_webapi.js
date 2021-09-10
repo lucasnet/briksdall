@@ -57,6 +57,20 @@ router.all("/blancio.asmx/Sottogruppi_Dettaglio_DEL", function(req, res) {
   apiProxy.web(req, res, {target: urlWebAPI});
 });
 
+// BLancio -> Supermercati
+router.all("/blancio.asmx/Supermercati_Elenco", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Supermercato_Dettaglio_GET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Supermercato_Dettaglio_SET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/Supermercato_Dettaglio_DEL", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+
 
 
 

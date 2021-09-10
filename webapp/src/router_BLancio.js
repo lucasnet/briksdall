@@ -69,6 +69,24 @@ router.get('/psottogruppi', function (req, res) {
 router.get('/supermercati', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/supermercati.html'));
 });
+router.get('/supermercato', function (req, res) {
+    res.sendFile(path.join(__dirname, '/templates/BLancio/supermercato.html'));
+});
+router.get('/csupermercati', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/supermercati_controller.js'));
+});
+router.get('/csupermercato', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/supermercato_controller.js'));
+});
+router.get('/msupermercati', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/supermercati_model.js'));
+});
+router.get('/psupermercati', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/supermercati_presenter.js'));
+});
+
+
+
 // define the RISORSE route
 router.get('/risorse', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/risorse.html'));

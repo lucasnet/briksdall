@@ -1,1 +1,45 @@
-<h1 class=\"h3 mb-4 text-gray-800\">Supermercati</h1>
+<!-- Page Heading -->
+<link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<h1 class="h3 mb-2 text-gray-800">SUPERMERCATI</h1>
+<p class="mb-4">Impostazione dei Supermercati.</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="#" class="btn btn-light btn-icon-split" id="btnNew">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Nuovo Supermercato</span>
+        </a>
+    </div>
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Elenco</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Codice</th>
+                        <th>Descrizione</th>
+                        <th></th>                    
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Codice</th>
+                        <th>Descrizione</th>
+                        <th></th>                 
+                    </tr>
+                </tfoot>
+                <tbody>
+                      
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>

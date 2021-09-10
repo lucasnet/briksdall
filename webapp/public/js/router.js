@@ -35,6 +35,20 @@ class Router {
             "model"      : "/BLancio/mSottogruppi",
             "modelGruppi": "/BLancio/mGruppi",
             "error"      : "/error"
+        },
+        "Supermercati":{
+            "template"   : "/BLancio/supermercati",
+            "controller" : "/BLancio/cSupermercati",
+            "presenter"  : "/BLancio/pSupermercati",
+            "model"      : "/BLancio/mSupermercati",
+            "error"      : "/error"
+        },
+        "Supermercati_Detail":{
+            "template"   : "/BLancio/supermercato",
+            "controller" : "/BLancio/cSupermercato",
+            "presenter"  : "/BLancio/pSupermercati",
+            "model"      : "/BLancio/mSupermercati",            
+            "error"      : "/error"
         }
     };
 
@@ -71,6 +85,18 @@ class Router {
                 controller = new Sottogruppo_Controller(this.auth, route_elements, params.element);
                 rawData = await controller.Init(this.#notify_BLancio_SottogruppiList);
                 break;
+
+            case "Supermercati":
+                let {Supermercati_Controller} = await import(route_elements.controller);
+                controller = new Supermercati_Controller(this.auth, route_elements);
+                rawData = await controller.Init(this.#notify_BLancio_SupermercatiDetail);
+                break;
+
+            case "Supermercati_Detail":
+                const {Supermercato_Controller} = await import(route_elements.controller);
+                controller = new Supermercato_Controller(this.auth, route_elements, params.element);
+                rawData = await controller.Init(this.#notify_BLancio_SupermercatiList);
+                break;
     
             default:
                 break;
@@ -90,6 +116,11 @@ class Router {
     #notify_BLancio_SottogruppiList(){
         router.Route({id: "Sottogruppi"})
     }
-
+    #notify_BLancio_SupermercatiDetail(id){
+        router.Route({id: "Supermercati_Detail", element: id})
+    }
+    #notify_BLancio_SupermercatiList(){
+        router.Route({id: "Supermercati"})
+    }
     
 }
