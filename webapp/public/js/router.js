@@ -49,6 +49,20 @@ class Router {
             "presenter"  : "/BLancio/pSupermercati",
             "model"      : "/BLancio/mSupermercati",            
             "error"      : "/error"
+        },
+        "Risorse":{
+            "template"   : "/BLancio/risorse",
+            "controller" : "/BLancio/cRisorse",
+            "presenter"  : "/BLancio/pRisorse",
+            "model"      : "/BLancio/mRisorse",
+            "error"      : "/error"
+        },
+        "Risorse_Detail":{
+            "template"   : "/BLancio/risorsa",
+            "controller" : "/BLancio/cRisorsa",
+            "presenter"  : "/BLancio/pRisorse",
+            "model"      : "/BLancio/mRisorse",            
+            "error"      : "/error"
         }
     };
 
@@ -97,6 +111,18 @@ class Router {
                 controller = new Supermercato_Controller(this.auth, route_elements, params.element);
                 rawData = await controller.Init(this.#notify_BLancio_SupermercatiList);
                 break;
+
+            case "Risorse":
+                let {Risorse_Controller} = await import(route_elements.controller);
+                controller = new Risorse_Controller(this.auth, route_elements);
+                rawData = await controller.Init(this.#notify_BLancio_RisorseDetail);
+                break;
+
+            case "Risorse_Detail":
+                const {Risorsa_Controller} = await import(route_elements.controller);
+                controller = new Risorsa_Controller(this.auth, route_elements, params.element);
+                rawData = await controller.Init(this.#notify_BLancio_RisorseList);
+                break;
     
             default:
                 break;
@@ -121,6 +147,12 @@ class Router {
     }
     #notify_BLancio_SupermercatiList(){
         router.Route({id: "Supermercati"})
+    }
+    #notify_BLancio_RisorseDetail(id){
+        router.Route({id: "Risorse_Detail", element: id})
+    }
+    #notify_BLancio_RisorseList(){
+        router.Route({id: "Risorse"})
     }
     
 }

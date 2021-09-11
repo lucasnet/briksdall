@@ -71,6 +71,18 @@ router.all("/blancio.asmx/Supermercato_Dettaglio_DEL", function(req, res) {
   apiProxy.web(req, res, {target: urlWebAPI});
 });
 
+// BLancio -> Risorse
+router.all("/blancio.asmx/RisorseEconomiche_Elenco", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/RisorseEconomiche_Dettaglio_GET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/RisorseEconomiche_Dettaglio_SET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+
+
 
 
 

@@ -91,6 +91,23 @@ router.get('/psupermercati', function (req, res) {
 router.get('/risorse', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/risorse.html'));
 });
+router.get('/risorsa', function (req, res) {
+    res.sendFile(path.join(__dirname, '/templates/BLancio/risorsa.html'));
+});
+router.get('/crisorse', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/risorse_controller.js'));
+});
+router.get('/crisorsa', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/risorsa_controller.js'));
+});
+router.get('/mrisorse', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/risorse_model.js'));
+});
+router.get('/prisorse', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/risorse_presenter.js'));
+});
+
+
 // define the SETUP PREVISIONE route
 router.get('/previsione_setup', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/previsione_setup.html'));
