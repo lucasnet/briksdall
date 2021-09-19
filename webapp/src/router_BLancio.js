@@ -40,7 +40,9 @@ router.get('/pgruppi', function (req, res) {
 router.get('/model_base', function (req, res) {
     res.sendFile(path.join(__dirname, '/js/BLancio/base_model.js'));
 });
-
+router.get('/controller_base', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/base_controller.js'));
+});
 
 
 // define the SOTTOGRUPPI route

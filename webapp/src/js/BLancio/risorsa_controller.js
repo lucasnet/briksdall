@@ -1,3 +1,5 @@
+import { Base_Controller } from "/BLancio/controller_base";
+
 //
 // Controller for Risorsa module
 //
@@ -10,6 +12,7 @@ export class Risorsa_Controller{
     _model = null;
     _presenter = null;
     _listDelegate = null;
+    _controllerBase = null;
 
 
     // Constructor. Set up initial values.
@@ -21,11 +24,28 @@ export class Risorsa_Controller{
         this._auth = auth;
         this._route_elements = route_elements;
         this._elementID = elementID;
+         
+        this._controllerBase = new Base_Controller();
     }
     
     
     // Public Section
 
+    // getters
+    GetControllerBase(){
+        return this._controllerBase;
+    }
+    GetModel(){
+        return this._model;
+    }
+    GetPresenter(){
+        return this._presenter;
+    }
+    GetListDelegate(){
+        return this._listDelegate;
+    }
+
+    
     // Init. Initialize Risorsa, showing its detail.
     // Main engine for handling Risorsa operations (Save, Delete)
     // Params:
@@ -47,7 +67,7 @@ export class Risorsa_Controller{
         
         rawData = await this._model.Risorse_Detail(this._elementID);
 
-        responseResult  = this.#getResponseResult(rawData);
+        responseResult  = this._controllerBase.GetResponseResult(rawData);
         responseRawData = this.#getResponseRawData(rawData);
         responseData    = this.#getStructuredData(responseRawData);
 
@@ -58,22 +78,6 @@ export class Risorsa_Controller{
    
 
     // Private Section
-
-    #getResponseResult(rawdata){
-        const xmlDoc = $.parseXML(rawdata);
-
-        let codice = 0;
-        let descrizione = "";
-        $(xmlDoc).each(function () {
-            codice = $(this).find("response>result>codice").text();
-            descrizione = $(this).find("response>result>descrizione").text();
-        });
-
-        return {
-                codice : codice,
-                descrizione : descrizione
-            };
-    }
 
     #getResponseRawData(rawdata){
         const xmlDoc = $.parseXML(rawdata);        
@@ -111,19 +115,11 @@ export class Risorsa_Controller{
   
     async #notifysave(sender, data){        
                 
-        let rawData = await sender._model.Risorse_Set(data);
-        const responseResult = sender.#getResponseResult(rawData);
+        let rawData = await sender.GetModel().Risorse_Set(data);
+        const responseResult = sender.GetControllerBase().GetResponseResult(rawData);
 
         const events = { list: sender._listDelegate};
-        sender._presenter.ShowModalResponse(responseResult, events);
+        sender.GetPresenter().ShowModalResponse(responseResult, events);
     }
-
-    //async #notifydelete(sender, elementID){
-    //    let rawData = await sender._model.Risorse_Delete(elementID);
-    //    const responseResult = sender.#getResponseResult(rawData);
-    //
-    //    const events = { list: sender._listDelegate};
-    //    sender._presenter.ShowModalResponse(responseResult, events);
-    //}
 
 }

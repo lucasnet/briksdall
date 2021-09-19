@@ -1,3 +1,5 @@
+import { Base_Controller } from "/BLancio/controller_base";
+
 //
 // Controller for Supermercato module
 //
@@ -10,6 +12,7 @@ export class Supermercato_Controller{
     _model = null;
     _presenter = null;
     _listDelegate = null;
+    _controllerBase = null;
 
 
     // Constructor. Set up initial values.
@@ -21,10 +24,28 @@ export class Supermercato_Controller{
         this._auth = auth;
         this._route_elements = route_elements;
         this._elementID = elementID;
+          
+        this._controllerBase = new Base_Controller();
     }
     
     
     // Public Section
+
+    // getters
+    GetControllerBase(){
+        return this._controllerBase;
+    }
+    GetModel(){
+        return this._model;
+    }
+    GetPresenter(){
+        return this._presenter;
+    }
+    GetListDelegate(){
+        return this._listDelegate;
+    }
+
+
 
     // Init. Initialize Gruppo, showing its detail.
     // Main engine for handling Gruppo operations (Save, Delete)
@@ -43,7 +64,7 @@ export class Supermercato_Controller{
 
         let rawData = await this._model.Supermercati_Detail(this._elementID);
 
-        const responseResult  = this.#getResponseResult(rawData);
+        const responseResult  = this._controllerBase.GetResponseResult(rawData);
         const responseRawData = this.#getResponseRawData(rawData);
         const responseData    = this.#getStructuredData(responseRawData);
 
@@ -54,22 +75,6 @@ export class Supermercato_Controller{
    
 
     // Private Section
-
-    #getResponseResult(rawdata){
-        const xmlDoc = $.parseXML(rawdata);
-
-        let codice = 0;
-        let descrizione = "";
-        $(xmlDoc).each(function () {
-            codice = $(this).find("response>result>codice").text();
-            descrizione = $(this).find("response>result>descrizione").text();
-        });
-
-        return {
-                codice : codice,
-                descrizione : descrizione
-            };
-    }
 
     #getResponseRawData(rawdata){
         const xmlDoc = $.parseXML(rawdata);        
@@ -102,19 +107,19 @@ export class Supermercato_Controller{
 
     async #notifysave(sender, data){        
                 
-        let rawData = await sender._model.Supermercati_Set(data);
-        const responseResult = sender.#getResponseResult(rawData);
+        let rawData = await sender.GetModel().Supermercati_Set(data);
+        const responseResult = sender.GetControllerBase().GetResponseResult(rawData);
 
-        const events = { list: sender._listDelegate};
-        sender._presenter.ShowModalResponse(responseResult, events);
+        const events = { list: sender.GetListDelegate()};
+        sender.GetPresenter().ShowModalResponse(responseResult, events);
     }
 
     async #notifydelete(sender, elementID){
-        let rawData = await sender._model.Supermercati_Delete(elementID);
-        const responseResult = sender.#getResponseResult(rawData);
+        let rawData = await sender.GetModel().Supermercati_Delete(elementID);
+        const responseResult = sender.GetControllerBase().GetResponseResult(rawData);
 
-        const events = { list: sender._listDelegate};
-        sender._presenter.ShowModalResponse(responseResult, events);
+        const events = { list: sender.GetListDelegate()};
+        sender.GetPresenter().ShowModalResponse(responseResult, events);
     }
 
 }

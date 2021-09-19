@@ -1,3 +1,5 @@
+import { Base_Controller } from "/BLancio/controller_base";
+
 //
 // Controller for Risorse process
 //
@@ -6,7 +8,7 @@ export class Risorse_Controller{
     // fields
     _auth = null;           //{username : "", password : "" };
     _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
-
+    _controllerBase = null;
 
 
     // Constructor. Set up initial values.
@@ -16,6 +18,8 @@ export class Risorse_Controller{
     constructor(auth, route_elements){
         this._auth = auth;
         this._route_elements = route_elements;
+
+        this._controllerBase = new Base_Controller();
     }
 
 
@@ -32,8 +36,8 @@ export class Risorse_Controller{
         const model = new Risorse_Model(this._auth);
         let rawData = await model.Risorse_List();
 
-        const responseResult = this.#getResponseResult(rawData);
-        const responseRawData = this.#getResponseRawData(rawData);
+        const responseResult = this._controllerBase.GetResponseResult(rawData);
+        const responseRawData = this._controllerBase.GetResponseRawData(rawData);
         const responseData = this.#getStructuredData(responseRawData);
 
         const presenter = new Risorse_Presenter(this._route_elements);
@@ -43,33 +47,6 @@ export class Risorse_Controller{
    
 
     // Private Section
-
-    #getResponseResult(rawdata){
-        const xmlDoc = $.parseXML(rawdata);
-
-        let codice = 0;
-        let descrizione = "";
-        $(xmlDoc).each(function () {
-            codice = $(this).find("response>result>codice").text();
-            descrizione = $(this).find("response>result>descrizione").text();
-        });
-
-        return {
-                codice : codice,
-                descrizione : descrizione
-            };
-     }
-
-     #getResponseRawData(rawdata){
-        const xmlDoc = $.parseXML(rawdata);        
-       
-        let data = "";
-        $(xmlDoc).each(function () {           
-            data = $(this).find("response>data").html();
-        });
-
-        return data;
-     }
 
      #getStructuredData(responserawdata){
         const xmlDoc = $.parseXML(responserawdata);        
