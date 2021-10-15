@@ -1,39 +1,35 @@
 //
-// Presenter for Gruppo / Gruppi modules
+// Presenter for Setup Previsione process
 //
-export class Gruppi_Presenter{
+export class PrevisioneSetup_Presenter{
     
     // fields
-    _templates    = null; // {modal_ok : "", modal_err : "", template : "", error : ""}
-    _modalconfirm = "";   // template for modal confirm      
-    _modalok      = "";   // template for modal ok
-    _modalerror   = "";   // template for modal error
+    _route_elements = null; // {model : "", presenter : "", contoller: "", template : "", error : ""}
+    //_modalconfirm = "/Common/modal_confirm"; // template for modal confirm      
+    _modalok      = "/Common/modal_ok";      // template for modal ok
+    _modalerror   = "/Common/modal_error";   // template for modal error
 
 
 
     // Constructor.
     // set up initial values.
-    // params: templates. Routing templates
-    constructor(templates){
-        this._templates = templates;    
-        
-        this._modalok = templates.modal_ok;
-        this._modalerror = templates.modal_err;
-        this._modalconfirm = templates.modal_confirm;
+    // params: route_elements. Routing elements (model, controller, presenter, templates)
+    constructor(route_elements){
+        this._route_elements = route_elements;       
     }
 
 
 
     // public methods
 
-    // ShowList. Shows Gruppi list.
+    // ShowList. Shows Sottogruppi list.
     // params:
     // - responseResult: web service response result (json format)
     // - responseData: web service response data (xml string format)
     // - notifyDetail: delegate for element "click" ("detail" request) 
     async ShowList(responseResult, responseData, notifyDetail){
        
-        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
+        const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
 
         let html_template = await this.#getData(template);
 
@@ -48,18 +44,28 @@ export class Gruppi_Presenter{
                 data: responseData,
                 "columnDefs": [
                     {
+                        // codice
                         "targets": [ 0 ],
                         "visible": false,
                         "searchable": false
                     },
                     {
+                        // descrizione
                         "targets": 1,
                         "render": function ( data, type, row ) {
                             return '<h5>' + row[1] + '</h5>';
                         }
+                    },                    
+                    {
+                        // riporto mensile
+                        "targets": 2,
+                        "searchable": false,
+                        "render": function ( data, type, row ) {
+                            return '<h6>' + row[2] + '</h6>';
+                        }
                     },
                     {
-                        "targets": 2,
+                        "targets": 3,
                         "searchable": false,
                         "orderable": false,
                         "render": function ( data, type, row ) {                                        
@@ -81,13 +87,13 @@ export class Gruppi_Presenter{
             $('#dataTable tbody').on('click', 'td button', function (){
                 notifyDetail(this.id);
             });
-            $('#btnNew').on('click', function (){
-                notifyDetail(0);
-            });
+            //$('#btnNew').on('click', function (){
+            //    notifyDetail(0);
+            //});
         }
     }
 
-    // ShowDetail. Shows Gruppo element.
+    // ShowDetail. Shows Risorse element.
     // params:
     // - responseResult: web service response result (json format)
     // - responseData: web service response data (xml string format)
@@ -97,7 +103,7 @@ export class Gruppi_Presenter{
 
         let html_modalconfirm = await this.#getData(this._modalconfirm);
 
-        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
+        const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
 
         let html_template = await this.#getData(template);
 
@@ -108,37 +114,40 @@ export class Gruppi_Presenter{
         $("#main_content").html(html_template);
         $("#modal_confirm").html(html_modalconfirm);
 
+
         if (responseResult.codice == 0){
             $("#txtDescrizione").val(responseData.descrizione);
             $("#txtCodice").val(responseData.codice);
+            $("#chkRiportoMensile").prop('checked', responseData.riporto_mensile == "1");           
 
             // events
             $("#btnSave").on("click", function (){
                 events.save(sender,
                             {                             
-                             codice      : $("#txtCodice").val(), 
-                             descrizione : $("#txtDescrizione").val( )
+                             codice         : $("#txtCodice").val(), 
+                             descrizione    : $("#txtDescrizione").val(),                             
+                             riporto_mensile: $("#chkRiportoMensile").prop('checked') ? "1" : "0"
                             });
             });
 
-            $("#btnDelete").on("click", function (){
-
-                $('#confermModalTitle').text('Sei sicuro di voler eliminare questo gruppo?');
-                $('#confermModal').modal('show');
-                $('#doNotConferm').text('No');
-                $('#confermIt').text('Si');
-
-                $('#confermIt').off('click');
-
-                $('#confermIt').click(function () {
-
-                    events.delete(
-                                    sender,
-                                    $("#txtCodice").val()
-                                 );
-
-                });
-            });
+            //$("#btnDelete").on("click", function (){
+            //
+            //    $('#confermModalTitle').text('Sei sicuro di voler eliminare questo sottogruppo?');
+            //    $('#confermModal').modal('show');
+            //    $('#doNotConferm').text('No');
+            //    $('#confermIt').text('Si');
+            //
+            //    $('#confermIt').off('click');
+            //
+            //    $('#confermIt').click(function () {
+            //
+            //        events.delete(
+            //                        sender,
+            //                        $("#txtCodice").val()
+            //                     );
+            //
+            //    });
+            //});
 
             $("#btnBack").on("click", function (){
                 events.list();

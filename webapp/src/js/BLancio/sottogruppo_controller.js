@@ -1,4 +1,7 @@
-import { Base_Controller } from "/BLancio/controller_base";
+import { Base_Controller }       from "/BLancio/controller_base";
+import { Sottogruppi_Model }     from "/BLancio/mSottogruppi";
+import { Sottogruppi_Presenter } from "/BLancio/pSottogruppi";
+import { Gruppi_Model }          from "/BLancio/mGruppi";
 
 //
 // Controller for Sottogruppo module
@@ -6,23 +9,23 @@ import { Base_Controller } from "/BLancio/controller_base";
 export class Sottogruppo_Controller{
 
     // fields
-    _auth = null;           //{username : "", password : "" };
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
-    _elementID = null;
-    _model = null;
-    _presenter = null;
-    _listDelegate = null;
+    _auth           = null;  // {username : "", password : "" };
+    _templates      = null;  // {modal_ok : "", modal_err : "", template : "", error : ""}
+    _elementID      = null;
+    _model          = null;
+    _presenter      = null;
+    _listDelegate   = null;
     _controllerBase = null;
 
 
     // Constructor. Set up initial values.
     // Params:
     // - auth: web services authorization fields (username, password)
-    // - route_elements: routing elements (model, presenter, controller, template)
+    // - templates: routing templates
     // - elementID: current element (ID)
-    constructor(auth, route_elements, elementID){
+    constructor(auth, templates, elementID){
         this._auth = auth;
-        this._route_elements = route_elements;
+        this._templates = templates;
         this._elementID = elementID;
  
         this._controllerBase = new Base_Controller();
@@ -54,18 +57,14 @@ export class Sottogruppo_Controller{
 
         this._listDelegate = notifyList;
 
-        const {Sottogruppi_Model} = await import(this._route_elements.model);
         this._model = new Sottogruppi_Model(this._auth);
-    
-        const {Sottogruppi_Presenter} = await import(this._route_elements.presenter);
-        this._presenter = new Sottogruppi_Presenter(this._route_elements);
+        this._presenter = new Sottogruppi_Presenter(this._templates);
         
         let rawData = null;
         let responseResult;
         let responseRawData;
         let responseData;
         
-        const {Gruppi_Model} = await import(this._route_elements.modelGruppi);
         const mGruppi = new Gruppi_Model(this._auth);
         rawData = await mGruppi.Gruppi_List();
         responseResult  = this._controllerBase.GetResponseResult(rawData);
@@ -89,8 +88,8 @@ export class Sottogruppo_Controller{
 
     #getResponseRawData(rawdata){
         const xmlDoc = $.parseXML(rawdata);        
-       
         let data = "";
+
         $(xmlDoc).each(function () {                       
             data = $(this).find("response").children()[1].outerHTML;    // 0: Result, 1: Data
         });
@@ -128,12 +127,10 @@ export class Sottogruppo_Controller{
         const xmlDoc = $.parseXML(responserawdata);        
        
         let loe = [];
-        let row = null;
         let codice = "";
         let descrizione = "";
 
         $(xmlDoc).find("row").each(function () {           
-            // row = $(this).find("row");
 
             let elem_codice = $(this)[0].childNodes[0];
             codice = elem_codice.textContent;

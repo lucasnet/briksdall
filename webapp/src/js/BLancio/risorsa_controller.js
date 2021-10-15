@@ -1,4 +1,6 @@
 import { Base_Controller } from "/BLancio/controller_base";
+import { Risorse_Model } from "/BLancio/mRisorse";
+import { Risorse_Presenter } from "/BLancio/pRisorse";
 
 //
 // Controller for Risorsa module
@@ -6,23 +8,23 @@ import { Base_Controller } from "/BLancio/controller_base";
 export class Risorsa_Controller{
 
     // fields
-    _auth = null;           //{username : "", password : "" };
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
-    _elementID = null;
-    _model = null;
-    _presenter = null;
-    _listDelegate = null;
+    _auth           = null;      // {username : "", password : "" };
+    _templates      = null;      // {modal_ok : "", modal_err : "", template : "", error : ""}
+    _elementID      = null;
+    _model          = null;
+    _presenter      = null;
+    _listDelegate   = null;
     _controllerBase = null;
 
 
     // Constructor. Set up initial values.
     // Params:
     // - auth: web services authorization fields (username, password)
-    // - route_elements: routing elements (model, presenter, controller, template)
+    // - templates: 
     // - elementID: current element (ID)
-    constructor(auth, route_elements, elementID){
+    constructor(auth, templates, elementID){
         this._auth = auth;
-        this._route_elements = route_elements;
+        this._templates = templates;
         this._elementID = elementID;
          
         this._controllerBase = new Base_Controller();
@@ -54,11 +56,8 @@ export class Risorsa_Controller{
 
         this._listDelegate = notifyList;
 
-        const {Risorse_Model} = await import(this._route_elements.model);
-        this._model = new Risorse_Model(this._auth);
-    
-        const {Risorse_Presenter} = await import(this._route_elements.presenter);
-        this._presenter = new Risorse_Presenter(this._route_elements);
+        this._model     = new Risorse_Model(this._auth);
+        this._presenter = new Risorse_Presenter(this._templates);
         
         let rawData = null;
         let responseResult;
@@ -118,7 +117,7 @@ export class Risorsa_Controller{
         let rawData = await sender.GetModel().Risorse_Set(data);
         const responseResult = sender.GetControllerBase().GetResponseResult(rawData);
 
-        const events = { list: sender._listDelegate};
+        const events = { list: sender.GetListDelegate()};
         sender.GetPresenter().ShowModalResponse(responseResult, events);
     }
 

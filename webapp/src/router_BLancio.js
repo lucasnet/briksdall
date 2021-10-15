@@ -114,6 +114,13 @@ router.get('/prisorse', function (req, res) {
 router.get('/previsione_setup', function (req, res) {
     res.sendFile(path.join(__dirname, '/templates/BLancio/previsione_setup.html'));
 });
+router.get('/cPrevisioneSetup', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/previsionesetup_controller.js'));
+});
+router.get('/pPrevisioneSetup', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/previsionesetup_presenter.js'));
+});
+
 
 router.get('*', function(req, res){
     res.sendFile(path.join(__dirname, '/templates/BLancio/404.html'));

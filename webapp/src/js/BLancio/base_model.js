@@ -8,7 +8,7 @@ export class Base_Model{
     async List(strXml, url){        
         const returnedData = await this.#postData(
             url,
-            'strxmlIN=' + strXml
+            '{strxmlIN: "' + strXml + '"}'
         )
         return returnedData;
     }
@@ -17,7 +17,7 @@ export class Base_Model{
     async Detail(strXml, url){        
         const returnedData = await this.#postData(
             url,
-            'strxmlIN=' + strXml
+            '{strxmlIN: "' + strXml + '"}'
         )
         return returnedData;
     }
@@ -26,7 +26,7 @@ export class Base_Model{
     async Set(strXml, url){        
         const returnedData = await this.#postData(
             url,
-            'strxmlIN=' + strXml
+            '{strxmlIN: "' + strXml + '"}'
         )
         return returnedData;
     }
@@ -35,7 +35,7 @@ export class Base_Model{
     async Delete(strXml, url){        
         const returnedData = await this.#postData(
             url,
-            'strxmlIN=' + strXml
+            '{strxmlIN: "' + strXml + '"}'
         )
         return returnedData;
     }
@@ -74,8 +74,9 @@ export class Base_Model{
           cache: 'no-cache',            // *default, no-cache, reload, force-cache, only-if-cached
           credentials: 'same-origin',   // include, *same-origin, omit
           headers: {           
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json; charset=utf-8',
           },
+          datatype: "json",
           redirect: 'follow',           // manual, *follow, error
           referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
           body: data                    // body data type must match "Content-Type" header
@@ -86,9 +87,8 @@ export class Base_Model{
 
         if (status == 200){
             // no problem...
-            const xml_soap_data = $.parseXML(soap_data)                     // convert soap data in xml document
-            const returned_data = xml_soap_data.children[0].textContent;    // get content (data without envelope)
-            return returned_data; 
+            const json_soap_data = $.parseJSON(soap_data);
+            return json_soap_data.d;
         }else{
             // an error occurs, probably 500
             throw soap_data;

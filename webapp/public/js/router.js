@@ -8,60 +8,72 @@ class Router {
 
     routesList = {
         "Gruppi":{
-            "template"   : "/BLancio/gruppi",
-            "controller" : "/BLancio/cGruppi",
-            "presenter"  : "/BLancio/pGruppi",
-            "model"      : "/BLancio/mGruppi",
-            "error"      : "/error"
+            "template"      : "/BLancio/gruppi",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "modal_confirm" : "/Common/modal_confirm",
+            "controller"    : "/BLancio/cGruppi",
+            "error"         : "/error"
         },
         "Gruppi_Detail":{
-            "template"   : "/BLancio/gruppo",
-            "controller" : "/BLancio/cGruppo",
-            "presenter"  : "/BLancio/pGruppi",
-            "model"      : "/BLancio/mGruppi",
-            "error"      : "/error"
+            "template"      : "/BLancio/gruppo",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "modal_confirm" : "/Common/modal_confirm",
+            "controller"    : "/BLancio/cGruppo",
+            "error"         : "/error"
         },
         "Sottogruppi":{
-            "template"   : "/BLancio/sottogruppi",
-            "controller" : "/BLancio/cSottogruppi",
-            "presenter"  : "/BLancio/pSottogruppi",
-            "model"      : "/BLancio/mSottogruppi",
-            "error"      : "/error"
+            "template"      : "/BLancio/sottogruppi",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "modal_confirm" : "/Common/modal_confirm",
+            "controller"    : "/BLancio/cSottogruppi",
+            "error"         : "/error"
         },
         "Sottogruppi_Detail":{
-            "template"   : "/BLancio/sottogruppo",
-            "controller" : "/BLancio/cSottogruppo",
-            "presenter"  : "/BLancio/pSottogruppi",
-            "model"      : "/BLancio/mSottogruppi",
-            "modelGruppi": "/BLancio/mGruppi",
-            "error"      : "/error"
+            "template"      : "/BLancio/sottogruppo",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "modal_confirm" : "/Common/modal_confirm",
+            "controller"    : "/BLancio/cSottogruppo",
+            "error"         : "/error"
         },
         "Supermercati":{
-            "template"   : "/BLancio/supermercati",
-            "controller" : "/BLancio/cSupermercati",
-            "presenter"  : "/BLancio/pSupermercati",
-            "model"      : "/BLancio/mSupermercati",
-            "error"      : "/error"
+            "template"      : "/BLancio/supermercati",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "modal_confirm" : "/Common/modal_confirm",
+            "controller"    : "/BLancio/cSupermercati",
+            "error"         : "/error"
         },
         "Supermercati_Detail":{
-            "template"   : "/BLancio/supermercato",
-            "controller" : "/BLancio/cSupermercato",
-            "presenter"  : "/BLancio/pSupermercati",
-            "model"      : "/BLancio/mSupermercati",            
-            "error"      : "/error"
+            "template"      : "/BLancio/supermercato",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "modal_confirm" : "/Common/modal_confirm",
+            "controller"    : "/BLancio/cSupermercato",
+            "error"         : "/error"
         },
         "Risorse":{
             "template"   : "/BLancio/risorse",
+            "modal_ok"   : "/Common/modal_ok",
+            "modal_err"  : "/Common/modal_error",
             "controller" : "/BLancio/cRisorse",
-            "presenter"  : "/BLancio/pRisorse",
-            "model"      : "/BLancio/mRisorse",
             "error"      : "/error"
         },
         "Risorse_Detail":{
             "template"   : "/BLancio/risorsa",
+            "modal_ok"   : "/Common/modal_ok",
+            "modal_err"  : "/Common/modal_error",
             "controller" : "/BLancio/cRisorsa",
-            "presenter"  : "/BLancio/pRisorse",
-            "model"      : "/BLancio/mRisorse",            
+            "error"      : "/error"
+        },
+        "SetupPrevisione":{
+            "template"   : "/BLancio/previsionesetup",
+            "controller" : "/BLancio/cPrevisioneSetup",
+            "presenter"  : "/BLancio/pPrevisioneSetup",
+            "model"      : "",            
             "error"      : "/error"
         }
     };
@@ -122,6 +134,12 @@ class Router {
                 const {Risorsa_Controller} = await import(route_elements.controller);
                 controller = new Risorsa_Controller(this.auth, route_elements, params.element);
                 rawData = await controller.Init(this.#notify_BLancio_RisorseList);
+                break;
+    
+            case "SetupPrevisione":
+                let {PrevisioneSetup_Controller} = await import(route_elements.controller);
+                controller = new PrevisioneSetup_Controller(this.auth, route_elements);
+                rawData = await controller.Init(this.#notify_BLancio_RisorseDetail);
                 break;
     
             default:

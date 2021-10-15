@@ -10,10 +10,11 @@ export class Sottogruppi_Model{
     _urlDetail = '/webapi/blancio.asmx/Sottogruppi_Dettaglio_GET';
     _urlSet    = '/webapi/blancio.asmx/Sottogruppi_Dettaglio_SET';
     _urlDelete = '/webapi/blancio.asmx/Sottogruppi_Dettaglio_DEL';
-    _username = '';
-    _password = '';
+    _username  = '';
+    _password  = '';
     _modelBase = null;
     
+
     // constructor
     constructor(auth){
         this._username = auth.username;
@@ -25,8 +26,8 @@ export class Sottogruppi_Model{
 
     // public methods
     async Sottogruppi_List(){
-        const strXml = this.#getXml_List(); 
-        return this._modelBase.List(strXml, this._urlList);
+      const strXml = this.#getXml_List(); 
+      return this._modelBase.List(strXml, this._urlList);
     }
     async Sottogruppi_Detail(elementID){
         const strXml = this.#getXml_Detail(elementID);

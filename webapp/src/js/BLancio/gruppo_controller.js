@@ -1,4 +1,6 @@
-import { Base_Controller } from "/BLancio/controller_base";
+import { Base_Controller }  from "/BLancio/controller_base";
+import { Gruppi_Model }     from "/BLancio/mGruppi";
+import { Gruppi_Presenter } from "/BLancio/pGruppi";
 
 //
 // Controller for Gruppo module
@@ -6,23 +8,23 @@ import { Base_Controller } from "/BLancio/controller_base";
 export class Gruppo_Controller{
 
     // fields
-    _auth = null;           //{username : "", password : "" };
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
-    _elementID = null;
-    _model = null;
-    _presenter = null;
-    _listDelegate = null;
+    _auth           = null;  // {username : "", password : "" };
+    _templates      = null;  // {modal_ok : "", modal_err : "", template : "", error : ""}
+    _elementID      = null;
+    _model          = null;
+    _presenter      = null;
+    _listDelegate   = null;
     _controllerBase = null;
 
 
     // Constructor. Set up initial values.
     // Params:
     // - auth: web services authorization fields (username, password)
-    // - route_elements: routing elements (model, presenter, controller, template)
+    // - templates: routing templates
     // - elementID: current element (ID)
-    constructor(auth, route_elements, elementID){
+    constructor(auth, templates, elementID){
         this._auth = auth;
-        this._route_elements = route_elements;
+        this._templates = templates;
         this._elementID = elementID;
         
         this._controllerBase = new Base_Controller();
@@ -46,6 +48,7 @@ export class Gruppo_Controller{
     }
 
 
+    
     // Init. Initialize Gruppo, showing its detail.
     // Main engine for handling Gruppo operations (Save, Delete)
     // Params:
@@ -54,11 +57,8 @@ export class Gruppo_Controller{
 
         this._listDelegate = notifyList;
 
-        const {Gruppi_Model} = await import(this._route_elements.model);
         this._model = new Gruppi_Model(this._auth);
-    
-        const {Gruppi_Presenter} = await import(this._route_elements.presenter);
-        this._presenter = new Gruppi_Presenter(this._route_elements);
+        this._presenter = new Gruppi_Presenter(this._templates);
         
 
         let rawData = await this._model.Gruppi_Detail(this._elementID);
@@ -89,8 +89,6 @@ export class Gruppo_Controller{
     #getStructuredData(responserawdata){
         const xmlDoc = $.parseXML(responserawdata);        
        
-        let loe = [];
-        let row = null;
         let codice = "";
         let descrizione = "";
 

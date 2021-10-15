@@ -1,4 +1,7 @@
-import { Base_Controller } from "/BLancio/controller_base";
+import { Base_Controller }   from "/BLancio/controller_base";
+import { Risorse_Model }     from "/BLancio/mRisorse";
+import { Risorse_Presenter } from "/BLancio/pRisorse";
+
 
 //
 // Controller for Risorse process
@@ -6,18 +9,18 @@ import { Base_Controller } from "/BLancio/controller_base";
 export class Risorse_Controller{
 
     // fields
-    _auth = null;           //{username : "", password : "" };
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
+    _auth = null;           // {username : "", password : "" };
+    _templates = null;      // {modal_ok : "", modal_err : "", template : "", error : ""}
     _controllerBase = null;
 
 
     // Constructor. Set up initial values.
     // Params:
     // - auth: web services authorization fields (username, password)
-    // - route_elements: routing elements (model, presenter, controller, template)
-    constructor(auth, route_elements){
+    // - templates: modal_ok, modal_err, template
+    constructor(auth, templates){
         this._auth = auth;
-        this._route_elements = route_elements;
+        this._templates = templates;
 
         this._controllerBase = new Base_Controller();
     }
@@ -30,21 +33,26 @@ export class Risorse_Controller{
     // Params:
     // - notifyDetail: delegate for Detail event (click on single element in the list)
     async Init(notifyDetail){
-        const {Risorse_Model} = await import(this._route_elements.model);
-        const {Risorse_Presenter} = await import(this._route_elements.presenter);
+        
+        const data = await this.GetList();
+        
+        const presenter = new Risorse_Presenter(this._templates);
+        presenter.ShowList(data.responseResult, data.responseData, notifyDetail);
+    }
+
+
+    async GetList(){
         
         const model = new Risorse_Model(this._auth);
         let rawData = await model.Risorse_List();
-
+        
         const responseResult = this._controllerBase.GetResponseResult(rawData);
         const responseRawData = this._controllerBase.GetResponseRawData(rawData);
         const responseData = this.#getStructuredData(responseRawData);
 
-        const presenter = new Risorse_Presenter(this._route_elements);
-        presenter.ShowList(responseResult, responseData, notifyDetail);
+        return {responseResult, responseData};
     }
 
-   
 
     // Private Section
 

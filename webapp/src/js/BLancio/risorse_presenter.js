@@ -4,18 +4,21 @@
 export class Risorse_Presenter{
     
     // fields
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : "", error : ""}
-    //_modalconfirm = "/Common/modal_confirm"; // template for modal confirm      
-    _modalok      = "/Common/modal_ok";      // template for modal ok
-    _modalerror   = "/Common/modal_error";   // template for modal error
+    _templates = null;      // {modal_ok : "", modal_err : "", template : "", error : ""}
+    //_modalconfirm = "";   // template for modal confirm      
+    _modalok      = "";     // template for modal ok
+    _modalerror   = "";     // template for modal error
 
 
 
     // Constructor.
     // set up initial values.
     // params: route_elements. Routing elements (model, controller, presenter, templates)
-    constructor(route_elements){
-        this._route_elements = route_elements;       
+    constructor(templates){
+        this._templates = templates;    
+        
+        this._modalok = templates.modal_ok;
+        this._modalerror = templates.modal_err;
     }
 
 
@@ -29,7 +32,7 @@ export class Risorse_Presenter{
     // - notifyDetail: delegate for element "click" ("detail" request) 
     async ShowList(responseResult, responseData, notifyDetail){
        
-        const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
+        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
 
         let html_template = await this.#getData(template);
 
@@ -103,7 +106,7 @@ export class Risorse_Presenter{
 
         let html_modalconfirm = await this.#getData(this._modalconfirm);
 
-        const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
+        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
 
         let html_template = await this.#getData(template);
 

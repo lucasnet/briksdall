@@ -1,4 +1,6 @@
-import { Base_Controller } from "/BLancio/controller_base";
+import { Base_Controller }        from "/BLancio/controller_base";
+import { Supermercati_Model }     from "/BLancio/mSupermercati";
+import { Supermercati_Presenter } from "/BLancio/pSupermercati";
 
 //
 // Controller for Supermercati process
@@ -6,19 +8,18 @@ import { Base_Controller } from "/BLancio/controller_base";
 export class Supermercati_Controller{
 
     // fields
-    _auth = null;           //{username : "", password : "" };
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
+    _auth           = null;     // {username : "", password : "" };
+    _templates      = null;     // {modal_ok : "", modal_err : "", template : "", error : ""}
     _controllerBase = null;
-
 
 
     // Constructor. Set up initial values.
     // Params:
     // - auth: web services authorization fields (username, password)
-    // - route_elements: routing elements (model, presenter, controller, template)
-    constructor(auth, route_elements){
+    // - templates: routing templates
+    constructor(auth, templates){
         this._auth = auth;
-        this._route_elements = route_elements;
+        this._templates = templates;
    
         this._controllerBase = new Base_Controller();
     }
@@ -31,9 +32,15 @@ export class Supermercati_Controller{
     // Params:
     // - notifyDetail: delegate for Detail event (click on single element in the list)
     async Init(notifyDetail){
-        const {Supermercati_Model} = await import(this._route_elements.model);
-        const {Supermercati_Presenter} = await import(this._route_elements.presenter);
         
+        const data = await this.GetList();
+
+        const presenter = new Supermercati_Presenter(this._templates);
+        presenter.ShowList(data.responseResult, data.responseData, notifyDetail);
+    }
+
+    async GetList(){
+    
         const model = new Supermercati_Model(this._auth);
         let rawData = await model.Supermercati_List();
 
@@ -41,11 +48,10 @@ export class Supermercati_Controller{
         const responseRawData = this._controllerBase.GetResponseRawData(rawData);
         const responseData = this.#getStructuredData(responseRawData);
 
-        const presenter = new Supermercati_Presenter(this._route_elements);
-        presenter.ShowList(responseResult, responseData, notifyDetail);
+        return {responseResult, responseData};
     }
 
-   
+
 
     // Private Section
 
@@ -53,12 +59,10 @@ export class Supermercati_Controller{
         const xmlDoc = $.parseXML(responserawdata);        
        
         let loe = [];
-        let row = null;
         let codice = "";
         let descrizione = "";
 
         $(xmlDoc).find("row").each(function () {           
-            // row = $(this).find("row");
 
             let elem_codice = $(this)[0].childNodes[0];
             codice = elem_codice.textContent;
