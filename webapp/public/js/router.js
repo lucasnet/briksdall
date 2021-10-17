@@ -70,7 +70,7 @@ class Router {
             "error"      : "/error"
         },
         "SetupPrevisione":{
-            "template"   : "/BLancio/previsionesetup",
+            "template"   : "/BLancio/previsione_setup",
             "controller" : "/BLancio/cPrevisioneSetup",
             "presenter"  : "/BLancio/pPrevisioneSetup",
             "model"      : "",            

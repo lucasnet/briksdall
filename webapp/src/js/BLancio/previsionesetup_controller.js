@@ -1,5 +1,9 @@
-import { Base_Controller } from "/BLancio/controller_base";
-import { Risorse_Controller } from "/BLancio/cRisorse";
+import { Base_Controller }           from "/BLancio/controller_base";
+import { Risorse_Controller }        from "/BLancio/cRisorse";
+import { Gruppi_Controller }         from "/BLancio/cGruppi";
+import { Sottogruppi_Controller }    from "/BLancio/cSottogruppi";
+//import { PrevisioneSetup_Model }     from "/BLancio/mPrevisioneSetup";
+import { PrevisioneSetup_Presenter } from "/BLancio/pPrevisioneSetup";
 
 //
 // Controller for Previsione Setup process
@@ -7,19 +11,21 @@ import { Risorse_Controller } from "/BLancio/cRisorse";
 export class PrevisioneSetup_Controller{
 
     // fields
-    _auth = null;           //{username : "", password : "" };
-    _route_elements = null; // {model : "", presenter : "", contoller: "", template : ""}
+    _auth           = null;     // {username : "", password : "" };
+    _templates      = null;     // {modal_ok : "", modal_err : "", template : "", error : ""}
     _controllerBase = null;
-    _risorse = null;
+    _risorse        = null;
+    _gruppi         = null;
+    _sottogruppi    = null;
 
 
     // Constructor. Set up initial values.
     // Params:
     // - auth: web services authorization fields (username, password)
-    // - route_elements: routing elements (model, presenter, controller, template)
-    constructor(auth, route_elements){
+    // - templates: routing templates
+    constructor(auth, templates){
         this._auth = auth;
-        this._route_elements = route_elements;
+        this._templates = templates;
 
         this._controllerBase = new Base_Controller();
     }
@@ -32,46 +38,29 @@ export class PrevisioneSetup_Controller{
     async Init(notifyDetail){
         // risorse controller
         // gruppi + sottogruppi model
-        this._risorse = new Risorse_Controller(this._auth,);
+        this._risorse = new Risorse_Controller(this._auth, null);
+        this._gruppi = new Gruppi_Controller(this._auth, null);
+        this._sottogruppi = new Sottogruppi_Controller(this._auth, null);
+     
+        const response_risorse     = await this._risorse.GetList();
+        const response_gruppi      = await this._gruppi.GetList();
+        const response_sottogruppi = await this._sottogruppi.GetList();
 
-        const {PrevisioneSetup_Model}     = await import(this._route_elements.model);
-        const {PrevisioneSetup_Presenter} = await import(this._route_elements.presenter);
+        const presenter = new PrevisioneSetup_Presenter(this._templates);
         
-        // const model = new Gruppi_Model(this._auth);
-        // let rawData = await model.Gruppi_List();
+        let responseResult = response_risorse.responseResult;
+        if (responseResult.codice == 0) responseResult = response_gruppi.responseResult;
+        if (responseResult.codice == 0) responseResult = response_sottogruppi.responseResult;
 
-        //const responseResult = this._controllerBase.GetResponseResult(rawData);
-        //const responseRawData = this._controllerBase.GetResponseRawData(rawData);
-        //const responseData = this.#getStructuredData(responseRawData);
-
-        const presenter = new Gruppi_Presenter(this._route_elements);
-        presenter.ShowList(responseResult, responseData, notifyDetail);
+        presenter.Init(responseResult,
+                    response_risorse.responseData,
+                    response_gruppi.responseData,
+                    response_sottogruppi.responseData,
+                       notifyDetail);
     }
 
    
 
     // Private Section
 
-    #getStructuredData(responserawdata){
-        const xmlDoc = $.parseXML(responserawdata);        
-       
-        let loe = [];
-        let row = null;
-        let codice = "";
-        let descrizione = "";
-
-        $(xmlDoc).find("row").each(function () {           
-            // row = $(this).find("row");
-
-            let elem_codice = $(this)[0].childNodes[0];
-            codice = elem_codice.textContent;
-
-            let elem_descrizione = $(this)[0].childNodes[1];
-            descrizione = decodeURIComponent(elem_descrizione.textContent);
-
-            loe.push([codice, descrizione]);
-        });
-
-        return loe;
-    }
 }

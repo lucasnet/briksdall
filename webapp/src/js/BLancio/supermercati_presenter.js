@@ -123,7 +123,7 @@ export class Supermercati_Presenter{
 
             $("#btnDelete").on("click", function (){
 
-                $('#confermModalTitle').text('Sei sicuro di voler eliminare questo gruppo?');
+                $('#confermModalTitle').text('Sei sicuro di voler eliminare questo supermercato?');
                 $('#confermModal').modal('show');
                 $('#doNotConferm').text('No');
                 $('#confermIt').text('Si');

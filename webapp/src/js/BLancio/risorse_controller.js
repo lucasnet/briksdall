@@ -24,7 +24,7 @@ export class Risorse_Controller{
 
         this._controllerBase = new Base_Controller();
     }
-
+    
 
 
     // Public Section 
