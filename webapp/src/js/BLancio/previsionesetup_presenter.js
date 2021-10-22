@@ -30,7 +30,7 @@ export class PrevisioneSetup_Presenter{
                 risorse_responseData,
                 gruppi_responseData,
                 sottogruppi_responseData,
-                notifyDetail){
+                notifyRisorseChanged){
                    
         const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
         let html_template = await this.#getData(this._templates.template);
@@ -39,11 +39,50 @@ export class PrevisioneSetup_Presenter{
         }
         $("#main_content").html(html_template);
 
+        this.#filterCboElements($("#ddRisorse_filtro"), risorse_responseData, "");
+        this.#filterCboElements($("#ddGruppi_filtro"),  gruppi_responseData, "");
+        this.#filterCboElements($("#ddSottogruppi"),    sottogruppi_responseData, "");
+
+        const self = this;
+        $("#ddGruppi_filtro").change(function(){
+            const gruppo = $("#ddGruppi_filtro option:selected").text();
+            self.#filterCboElements($("#ddSottogruppi"),sottogruppi_responseData,gruppo);
+        });
+        $("#ddRisorse_filtro").change(function(){
+            const idRisorsa = $("#ddRisorse_filtro").val();
+            notifyRisorseChanged(idRisorsa);
+        });
     }
 
 
+    // private methods
+
+    #filterCboElements(object, elements, filter){
+        object.empty();
+
+        // first element (empty)
+        let opt = document.createElement("option");
+        opt.value = 0;          // codice
+        opt.innerHTML = "";     // descrizione                                
+        object.append(opt);
+
+        elements.forEach(function(element)
+                            {                                
+                                let opt = document.createElement("option");
+                                opt.value= element[0];          // codice
+                                opt.innerHTML = element[1];     // descrizione
+                            
+                                // then append it to the select element
+                                const toadd = (filter == "") || (element[2] == filter);
+                                if (toadd) object.append(opt);
+                            });
+        return;
+    }
 
     
+
+
+
 
     // ShowList. Shows Sottogruppi list.
     // params:

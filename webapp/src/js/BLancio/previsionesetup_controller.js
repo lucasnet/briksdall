@@ -56,11 +56,13 @@ export class PrevisioneSetup_Controller{
                     response_risorse.responseData,
                     response_gruppi.responseData,
                     response_sottogruppi.responseData,
-                       notifyDetail);
+                    this.notifyRisorseChanged);
     }
 
    
 
     // Private Section
-
+    notifyRisorseChanged(idRisorsa){
+        alert("fill");
+    }
 }

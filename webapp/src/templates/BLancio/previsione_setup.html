@@ -1,2 +1,80 @@
 <h1 class="h3 mb-2 text-gray-800">CONFIGURAZIONE PREVISIONE</h1>
 <p class="mb-4">Configurazione e generazione della previsione di Bilancio.</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Configurazione e Generazione della Previsione</h6>
+    </div>
+    <div class="card-body">
+        <div class="panel panel-default">
+            <label for="ddRisorse_filtro">Risorsa Economica di riferimento:</label>
+            <select class="form-control" id="ddRisorse_filtro"></select>
+        </div>
+    </div>
+    <div class="card-footer py-3">
+        <a href="#" class="btn btn-primary btn-icon-split" id="btnGenerate">
+            <span class="icon text-white-50">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="text">Genera Previsione</span>
+        </a> 
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Sottogruppi appartenenti alla previsione</h6>
+    </div>
+    <div class="card-body">
+        <div class="panel panel-default row">
+            <div class="col-md-6">
+                <label for="ddGruppi_filtro">Filtra Elenco:</label>
+                <select class="form-control" id="ddGruppi_filtro" onchangek="javascript: fillSottogruppi(this);callWSList(this);"></select>
+            </div>
+            <div class="col-md-6">
+                <label for="ddSottogruppi">Sottogruppo:</label>
+                <select class="form-control" id="ddSottogruppi"></select>                                       
+            </div>  
+        </div>
+    </div>
+    <div class="card-footer py-3">
+        <a href="#" class="btn btn-primary btn-icon-split" id="btnGenerate">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Aggiungi all'elenco</span>
+        </a> 
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Elenco sottogruppi appartenenti alla previsione</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Gruppo</th>                        
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Gruppo</th>                        
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                      
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
