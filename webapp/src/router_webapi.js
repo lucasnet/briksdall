@@ -82,6 +82,19 @@ router.all("/blancio.asmx/RisorseEconomiche_Dettaglio_SET", function(req, res) {
   apiProxy.web(req, res, {target: urlWebAPI});
 });
 
+// BLancio -> Previsione Setup
+router.all("/blancio.asmx/PrevisioneConfigurazione_Elenco", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/PrevisioneConfigurazione_Dettaglio_SET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/PrevisioneConfigurazione_Dettaglio_DEL", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/blancio.asmx/PrevisioneConfigurazione_Genera", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
 
 
 

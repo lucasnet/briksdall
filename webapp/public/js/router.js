@@ -70,7 +70,10 @@ class Router {
             "error"      : "/error"
         },
         "SetupPrevisione":{
-            "template"   : "/BLancio/previsione_setup",
+            "template"      : "/BLancio/previsione_setup",
+            "modal_confirm" : "/Common/modal_confirm",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
             "controller" : "/BLancio/cPrevisioneSetup",
             "presenter"  : "/BLancio/pPrevisioneSetup",
             "model"      : "",            

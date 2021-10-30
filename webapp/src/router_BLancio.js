@@ -120,6 +120,10 @@ router.get('/cPrevisioneSetup', function (req, res) {
 router.get('/pPrevisioneSetup', function (req, res) {
     res.sendFile(path.join(__dirname, '/js/BLancio/previsionesetup_presenter.js'));
 });
+router.get('/mPrevisioneSetup', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/previsionesetup_model.js'));
+});
+
 
 
 router.get('*', function(req, res){

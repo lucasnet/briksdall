@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="card-footer py-3">
-        <a href="#" class="btn btn-primary btn-icon-split" id="btnGenerate">
+        <a href="#" class="btn btn-primary btn-icon-split" id="btnInsert">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
@@ -56,15 +56,17 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Descrizione</th>
-                        <th>Gruppo</th>                        
                         <th></th>
+                        <th>Sottogruppo</th>
+                        <th>Gruppo</th>   
+                        <th></th>                                             
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Descrizione</th>
-                        <th>Gruppo</th>                        
+                        <th></th>
+                        <th>Sottogruppo</th>
+                        <th>Gruppo</th>                                                
                         <th></th>
                     </tr>
                 </tfoot>
@@ -75,6 +77,10 @@
         </div>
     </div>
 </div>
+
+<div id="modal_confirm"></div> 
+<div id="modal_ok"></div> 
+<div id="modal_error"></div> 
 
 <script src="vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>

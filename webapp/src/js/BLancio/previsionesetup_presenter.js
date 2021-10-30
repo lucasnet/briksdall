@@ -30,7 +30,10 @@ export class PrevisioneSetup_Presenter{
                 risorse_responseData,
                 gruppi_responseData,
                 sottogruppi_responseData,
-                notifyRisorseChanged){
+                notifyRisorseChanged,
+                notifyInsertSottogruppo,
+                notifyGenerate,
+                controller){
                    
         const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
         let html_template = await this.#getData(this._templates.template);
@@ -39,8 +42,13 @@ export class PrevisioneSetup_Presenter{
         }
         $("#main_content").html(html_template);
 
-        this.#filterCboElements($("#ddRisorse_filtro"), risorse_responseData, "");
-        this.#filterCboElements($("#ddGruppi_filtro"),  gruppi_responseData, "");
+
+        let html_modalconfirm = await this.#getData(this._modalconfirm);
+        $("#modal_confirm").html(html_modalconfirm);
+
+
+        this.#filterCboElements($("#ddRisorse_filtro"), risorse_responseData,     "");
+        this.#filterCboElements($("#ddGruppi_filtro"),  gruppi_responseData,      "");
         this.#filterCboElements($("#ddSottogruppi"),    sottogruppi_responseData, "");
 
         const self = this;
@@ -50,9 +58,144 @@ export class PrevisioneSetup_Presenter{
         });
         $("#ddRisorse_filtro").change(function(){
             const idRisorsa = $("#ddRisorse_filtro").val();
-            notifyRisorseChanged(idRisorsa);
+            const idGruppo = $("#ddGruppi_filtro").val();
+            notifyRisorseChanged(controller, idRisorsa, idGruppo);
         });
+        $("#btnInsert").click(function(){
+            const idRisorsa = $("#ddRisorse_filtro").val();
+            const idSottogruppo = $("#ddSottogruppi").val();
+            notifyInsertSottogruppo(controller, idRisorsa, idSottogruppo);
+        });
+        $("#btnGenerate").click(function(){
+             // modal confirm
+             $('#confermModalTitle').text('Confermi la generazione di una nuova previsione per la risorsa selezionata?');
+             $('#confermModal').modal('show');
+             $('#doNotConferm').text('No');
+             $('#confermIt').text('Si');
+
+             $('#confermIt').off('click');
+
+             $('#confermIt').click(function () {
+
+                const idRisorsa = $("#ddRisorse_filtro").val();
+                notifyGenerate(controller, idRisorsa);
+
+             });
+            
+        });
+
+
+        $('#dataTable').DataTable({
+            "columnDefs": [
+                {
+                    // codice
+                    "targets": [ 0 ],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    // sottogruppo
+                    "targets": 1,
+                    "render": function ( data, type, row ) {
+                        return row[1];
+                    }
+                },                    
+                {
+                    // gruppo
+                    "targets": 2,
+                    "render": function ( data, type, row ) {
+                        return row[2];
+                    }
+                },
+                {
+                    "targets": 3,
+                    "searchable": false,
+                    "orderable": false,
+                    "render": function ( data, type, row ) {                                        
+                                    const edit = '<button class="btn btn-light btn-icon-split" '
+                                                    + 'id="' + row[3] + '"> '     // row[3] = id sottogruppo                                               
+                                                    + '<span class="icon text-white-50">'
+                                                    + '<i class="fas fa-trash"></i>'
+                                                    + '</span>'
+                                                    + '</button>';
+                                    return edit;
+                                }
+                }
+            ],
+            "order": [[ 1, "asc" ]]            
+        });
+
+
     }
+
+    // ShowSottogruppiList. Shows Sottogruppi list.
+    // params:
+    // - responseResult: web service response result (json format)
+    // - responseData: web service response data (xml string format)
+    // - notifyRemove: delegate for element "click" ("remove" request) 
+    async ShowSottogruppiList(responseResult, responseData, notifyRemove, controller){
+
+        if (responseResult.codice == 0){
+            const table = $('#dataTable').DataTable();
+            this.#addRows(table, responseData);
+
+            const idRisorsa = $('#ddRisorse_filtro').val();
+
+            $('#dataTable tbody').on('click', 'td button', function (){
+
+                const idSottogruppo = this.id;
+
+                // modal confirm
+                $('#confermModalTitle').text('Sei sicuro di voler eliminare questo sottogruppo?');
+                $('#confermModal').modal('show');
+                $('#doNotConferm').text('No');
+                $('#confermIt').text('Si');
+
+                $('#confermIt').off('click');
+
+                $('#confermIt').click(function () {
+
+                    notifyRemove(controller, idRisorsa, idSottogruppo);
+
+                });
+               
+            });
+        }
+    }
+
+    // ShowModalResponse. Shows Ok/Error modal.
+    // params:
+    // - responseResult: web service response result (json format).
+    //                  if responseResult.Codice == 0 shows OK modal, else shows Error modal.
+    // - events: list of delegates (list). When OK modal closed, fires List delegate.
+    async ShowModalResponse(responseResult, events){
+        if (responseResult.codice == 0){
+
+            let html_modalok = await this.#getData(this._modalok);
+            $("#modal_ok").html(html_modalok);
+
+            $('#okModal').modal('show');
+            $('#chiudibox').off("click").click(function () {
+                $('#okModal').modal('hide');               
+            });
+            $('#xbox').off("click").click(function () {
+                $('#okModal').modal('hide');
+            });
+            $('#modal_ok').on('hidden.bs.modal', function (e) {                
+                events.list;
+              })
+
+        }else{
+            
+            let html_modalerror = await this.#getData(this._modalerror);
+            $("#modal_error").html(html_modalerror);
+
+            $('#errorModal').modal('show');
+            $('#showErrorCode').text(responseResult.codice);
+            $('#showErrorMsg').text(responseResult.descrizione);
+        }
+    }
+
 
 
     // private methods
@@ -79,180 +222,21 @@ export class PrevisioneSetup_Presenter{
         return;
     }
 
-    
+    #addRows(table, responseData){
 
+        table.clear();
 
+        responseData.forEach(function(element){
+            const codice        = element[0];
+            const sottogruppo   = element[1];
+            const gruppo        = element[2];
+            const idSottogruppo = element[3];
 
-
-    // ShowList. Shows Sottogruppi list.
-    // params:
-    // - responseResult: web service response result (json format)
-    // - responseData: web service response data (xml string format)
-    // - notifyDetail: delegate for element "click" ("detail" request) 
-    async ShowList(responseResult, responseData, notifyDetail){
-       
-        const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
-
-        let html_template = await this.#getData(template);
-
-        if (responseResult.codice != 0){
-            html_template = html_template.replace("{descrizione}", responseResult.descrizione);
-        }
-
-        $("#main_content").html(html_template);
-
-        if (responseResult.codice == 0){
-            $('#dataTable').DataTable({
-                data: responseData,
-                "columnDefs": [
-                    {
-                        // codice
-                        "targets": [ 0 ],
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        // descrizione
-                        "targets": 1,
-                        "render": function ( data, type, row ) {
-                            return '<h5>' + row[1] + '</h5>';
-                        }
-                    },                    
-                    {
-                        // riporto mensile
-                        "targets": 2,
-                        "searchable": false,
-                        "render": function ( data, type, row ) {
-                            return '<h6>' + row[2] + '</h6>';
-                        }
-                    },
-                    {
-                        "targets": 3,
-                        "searchable": false,
-                        "orderable": false,
-                        "render": function ( data, type, row ) {                                        
-                                        const edit = '<button class="btn btn-light btn-icon-split" '
-                                                        + 'id="' + row[0] + '"> '                                                    
-                                                        + '<span class="icon text-white-50">'
-                                                        + '<i class="fas fa-edit"></i>'
-                                                        + '</span>'
-                                                        + '<span class="text">Modifica</span>'
-                                                        + '</button>';
-
-                                        return edit;
-                                    }
-                    }
-                ],
-                "order": [[ 1, "asc" ]]            
-            });
-
-            $('#dataTable tbody').on('click', 'td button', function (){
-                notifyDetail(this.id);
-            });
-            //$('#btnNew').on('click', function (){
-            //    notifyDetail(0);
-            //});
-        }
+            let row = table
+                        .row.add( [ codice, sottogruppo, gruppo, idSottogruppo ] )
+                        .draw();
+        });        
     }
-
-    // ShowDetail. Shows Risorse element.
-    // params:
-    // - responseResult: web service response result (json format)
-    // - responseData: web service response data (xml string format)
-    // - events: list of delegates (save, delete, list)
-    // - sender: object owner
-    async ShowDetail(responseResult, responseData, events, sender){
-
-        let html_modalconfirm = await this.#getData(this._modalconfirm);
-
-        const template = (responseResult.codice == 0) ? this._route_elements.template : this._route_elements.error;
-
-        let html_template = await this.#getData(template);
-
-        if (responseResult.codice != 0){
-            html_template = html_template.replace("{descrizione}", responseResult.descrizione);
-        }
-
-        $("#main_content").html(html_template);
-        $("#modal_confirm").html(html_modalconfirm);
-
-
-        if (responseResult.codice == 0){
-            $("#txtDescrizione").val(responseData.descrizione);
-            $("#txtCodice").val(responseData.codice);
-            $("#chkRiportoMensile").prop('checked', responseData.riporto_mensile == "1");           
-
-            // events
-            $("#btnSave").on("click", function (){
-                events.save(sender,
-                            {                             
-                             codice         : $("#txtCodice").val(), 
-                             descrizione    : $("#txtDescrizione").val(),                             
-                             riporto_mensile: $("#chkRiportoMensile").prop('checked') ? "1" : "0"
-                            });
-            });
-
-            //$("#btnDelete").on("click", function (){
-            //
-            //    $('#confermModalTitle').text('Sei sicuro di voler eliminare questo sottogruppo?');
-            //    $('#confermModal').modal('show');
-            //    $('#doNotConferm').text('No');
-            //    $('#confermIt').text('Si');
-            //
-            //    $('#confermIt').off('click');
-            //
-            //    $('#confermIt').click(function () {
-            //
-            //        events.delete(
-            //                        sender,
-            //                        $("#txtCodice").val()
-            //                     );
-            //
-            //    });
-            //});
-
-            $("#btnBack").on("click", function (){
-                events.list();
-            });
-        }
-    }
-
-    // ShowModalResponse. Shows Ok/Error modal.
-    // params:
-    // - responseResult: web service response result (json format).
-    //                  if responseResult.Codice == 0 shows OK modal, else shows Error modal.
-    // - events: list of delegates (list). When OK modal closed, fires List delegate.
-    async ShowModalResponse(responseResult, events){
-        if (responseResult.codice == 0){
-
-            let html_modalok = await this.#getData(this._modalok);
-            $("#modal_ok").html(html_modalok);
-
-            $('#okModal').modal('show');
-            $('#chiudibox').off("click").click(function () {
-                $('#okModal').modal('hide');               
-            });
-            $('#xbox').off("click").click(function () {
-                $('#okModal').modal('hide');
-            });
-            $('#modal_ok').on('hidden.bs.modal', function (e) {                
-                events.list();
-              })
-
-        }else{
-            
-            let html_modalerror = await this.#getData(this._modalerror);
-            $("#modal_error").html(html_modalerror);
-
-            $('#errorModal').modal('show');
-            $('#showErrorCode').text(responseResult.codice);
-            $('#showErrorMsg').text(responseResult.descrizione);
-        }
-    }
-
-
-
-    // Private Section
 
     async #getData(url = '') {       
         const response = await fetch(url);
