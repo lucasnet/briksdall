@@ -74,10 +74,16 @@ class Router {
             "modal_confirm" : "/Common/modal_confirm",
             "modal_ok"      : "/Common/modal_ok",
             "modal_err"     : "/Common/modal_error",
-            "controller" : "/BLancio/cPrevisioneSetup",
-            "presenter"  : "/BLancio/pPrevisioneSetup",
-            "model"      : "",            
-            "error"      : "/error"
+            "controller"    : "/BLancio/cPrevisioneSetup",
+            "error"         : "/error"
+        },
+        "Registrazioni":{
+            "template"      : "/BLancio/registrazioni",
+            "modal_confirm" : "/Common/modal_confirm",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "controller"    : "/BLancio/cRegistrazioni",
+            "error"         : "/error"
         }
     };
 
@@ -142,7 +148,13 @@ class Router {
             case "SetupPrevisione":
                 let {PrevisioneSetup_Controller} = await import(route_elements.controller);
                 controller = new PrevisioneSetup_Controller(this.auth, route_elements);
-                rawData = await controller.Init(this.#notify_BLancio_RisorseDetail);
+                rawData = await controller.Init();
+                break;
+    
+            case "Registrazioni":
+                let {Registrazioni_Controller} = await import(route_elements.controller);
+                controller = new Registrazioni_Controller(this.auth, route_elements);
+                rawData = await controller.Init(this.#notify_BLancio_RegistrazioniDetail);
                 break;
     
             default:
@@ -175,5 +187,8 @@ class Router {
     #notify_BLancio_RisorseList(){
         router.Route({id: "Risorse"})
     }
-    
+    #notify_BLancio_RegistrazioniDetail(id){
+        router.Route({id: "Registrazioni_Detail", element: id})
+    }
+
 }

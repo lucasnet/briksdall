@@ -1,0 +1,257 @@
+<!-- Page Heading -->
+<link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<h1 class="h3 mb-2 text-gray-800">REGISTRAZIONI</h1>
+<p class="mb-4">Gestione delle registrazioni di bilancio.</p>
+
+
+<div class="card shadow mb-4">
+    <a href="#filters" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="filters">
+        <h6 class="m-0 font-weight-bold text-primary">Filtri</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="filters">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 col-sm-4">
+                    <label class="small font-weight-bold" for="cboGiorniDA">Data DA:</label>
+                    <select id="cboGiorniDA" class="form-control input-sm">
+	                    <option selected="selected" value="0">&lt;Giorno&gt;</option>
+	                    <option value="1">1</option>
+	                    <option value="2">2</option>
+	                    <option value="3">3</option>
+	                    <option value="4">4</option>
+	                    <option value="5">5</option>
+	                    <option value="6">6</option>
+	                    <option value="7">7</option>
+	                    <option value="8">8</option>
+	                    <option value="9">9</option>
+	                    <option value="10">10</option>
+	                    <option value="11">11</option>
+	                    <option value="12">12</option>
+	                    <option value="13">13</option>
+	                    <option value="14">14</option>
+	                    <option value="15">15</option>
+	                    <option value="16">16</option>
+	                    <option value="17">17</option>
+	                    <option value="18">18</option>
+	                    <option value="19">19</option>
+	                    <option value="20">20</option>
+	                    <option value="21">21</option>
+	                    <option value="22">22</option>
+	                    <option value="23">23</option>
+	                    <option value="24">24</option>
+	                    <option value="25">25</option>
+	                    <option value="26">26</option>
+	                    <option value="27">27</option>
+	                    <option value="28">28</option>
+	                    <option value="29">29</option>
+	                    <option value="30">30</option>
+	                    <option value="31">31</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label>&nbsp;</label>
+                    <select id="cboMesiDA" class="form-control input-sm">
+	                    <option selected="selected" value="0">&lt;Mese&gt;</option>
+	                    <option value="1">Gennaio</option>
+	                    <option value="2">Febbraio</option>
+	                    <option value="3">Marzo</option>
+	                    <option value="4">Aprile</option>
+	                    <option value="5">Maggio</option>
+	                    <option value="6">Giugno</option>
+	                    <option value="7">Luglio</option>
+	                    <option value="8">Agosto</option>
+	                    <option value="9">Settembre</option>
+	                    <option value="10">Ottobre</option>
+	                    <option value="11">Novembre</option>
+	                    <option value="12">Dicembre</option>
+                    </select>    
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label>&nbsp;</label>        
+                    <select id="cboAnniDA" class="form-control input-sm">
+	                    <option selected="selected" value="0">&lt;Anno&gt;</option>
+	                    <option value="2010">2010</option>
+	                    <option value="2011">2011</option>
+	                    <option value="2012">2012</option>
+	                    <option value="2013">2013</option>
+	                    <option value="2014">2014</option>
+	                    <option value="2015">2015</option>
+	                    <option value="2016">2016</option>
+	                    <option value="2017">2017</option>
+	                    <option value="2018">2018</option>
+	                    <option value="2019">2019</option>
+	                    <option value="2020">2020</option>
+	                    <option value="2021">2021</option>
+                    </select>                    
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label class="small font-weight-bold" >Data A:</label>
+                    <select id="cboGiorniA" class="form-control input-sm">
+	                    <option selected="selected" value="0">&lt;Giorno&gt;</option>
+	                    <option value="1">1</option>
+	                    <option value="2">2</option>
+	                    <option value="3">3</option>
+	                    <option value="4">4</option>
+	                    <option value="5">5</option>
+	                    <option value="6">6</option>
+	                    <option value="7">7</option>
+	                    <option value="8">8</option>
+	                    <option value="9">9</option>
+	                    <option value="10">10</option>
+	                    <option value="11">11</option>
+	                    <option value="12">12</option>
+	                    <option value="13">13</option>
+	                    <option value="14">14</option>
+	                    <option value="15">15</option>
+	                    <option value="16">16</option>
+	                    <option value="17">17</option>
+	                    <option value="18">18</option>
+	                    <option value="19">19</option>
+	                    <option value="20">20</option>
+	                    <option value="21">21</option>
+	                    <option value="22">22</option>
+	                    <option value="23">23</option>
+	                    <option value="24">24</option>
+	                    <option value="25">25</option>
+	                    <option value="26">26</option>
+	                    <option value="27">27</option>
+	                    <option value="28">28</option>
+	                    <option value="29">29</option>
+	                    <option value="30">30</option>
+	                    <option value="31">31</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label>&nbsp;</label>    
+                    <select id="cboMesiA" class="form-control input-sm">
+	                    <option selected="selected" value="0">&lt;Mese&gt;</option>
+	                    <option value="1">Gennaio</option>
+	                    <option value="2">Febbraio</option>
+	                    <option value="3">Marzo</option>
+	                    <option value="4">Aprile</option>
+	                    <option value="5">Maggio</option>
+	                    <option value="6">Giugno</option>
+	                    <option value="7">Luglio</option>
+	                    <option value="8">Agosto</option>
+	                    <option value="9">Settembre</option>
+	                    <option value="10">Ottobre</option>
+	                    <option value="11">Novembre</option>
+	                    <option value="12">Dicembre</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label>&nbsp;</label>    
+                    <select id="cboAnniA" class="form-control input-sm">
+	                    <option selected="selected" value="0">&lt;Anno&gt;</option>
+	                    <option value="2010">2010</option>
+	                    <option value="2011">2011</option>
+	                    <option value="2012">2012</option>
+	                    <option value="2013">2013</option>
+	                    <option value="2014">2014</option>
+	                    <option value="2015">2015</option>
+	                    <option value="2016">2016</option>
+	                    <option value="2017">2017</option>
+	                    <option value="2018">2018</option>
+	                    <option value="2019">2019</option>
+	                    <option value="2020">2020</option>
+	                    <option value="2021">2021</option>
+                    </select>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="my-2"></div>
+                    <label class="small font-weight-bold" >Gruppo:</label>
+                    <select id="cboGruppi" class="form-control input-sm">
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="my-2"></div>
+                    <div class="my-2"></div>
+                    <label class="small font-weight-bold" >Sottogruppo:</label>
+                    <select id="cboSottogruppi" class="form-control input-sm">
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="my-2"></div>
+                    <label class="small font-weight-bold" >Tipologia:</label>
+                    <select id="cboTipologie" class="form-control input-sm">
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="my-2"></div>
+                    <label class="small font-weight-bold" >Risorsa:</label>
+                    <select id="cboRisorse" class="form-control input-sm">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <div class="my-2"></div>
+                    <button class="btn btn-sm btn-primary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-filter"></i>
+                        </span>
+                        <span class="text">Applica filtri</span>
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-sm btn-secondary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                        <span class="text">Rimuovi filtri</span>
+                    </button>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="#" class="btn btn-sm btn-primary btn-icon-split" id="btnNew">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Nuova Registrazione</span>
+        </a>
+    </div>
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Elenco Registrazioni</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table-sm table-bordered table-hover compact" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Codice</th>
+                        <th>Data</th>
+                        <th>Gruppo</th>
+                        <th>Sottogruppo</th>
+                        <th>Risorsa</th>
+                        <th>Descrizione</th>
+                        <th>Entrate</th>
+                        <th>Uscite</th>
+                        <th></th>                    
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="6" style="text-align:right">Totale</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                      
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>

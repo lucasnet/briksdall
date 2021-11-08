@@ -47,7 +47,7 @@ export class PrevisioneSetup_Controller{
     // Public Section 
 
     // Init. Entry point method. 
-    async Init(notifyDetail){
+    async Init(){
         // risorse controller
         // gruppi + sottogruppi model
         this._risorse = new Risorse_Controller(this._auth, null);

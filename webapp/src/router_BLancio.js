@@ -125,6 +125,26 @@ router.get('/mPrevisioneSetup', function (req, res) {
 });
 
 
+// define the REGISTRAZIONI route
+router.get('/registrazioni', function (req, res) {
+    res.sendFile(path.join(__dirname, '/templates/BLancio/registrazioni.html'));
+});
+router.get('/registrazione', function (req, res) {
+    res.sendFile(path.join(__dirname, '/templates/BLancio/registrazione.html'));
+});
+router.get('/cregistrazioni', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/registrazioni_controller.js'));
+});
+router.get('/cregistrazione', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/registrazione_controller.js'));
+});
+router.get('/mregistrazioni', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/registrazioni_model.js'));
+});
+router.get('/pregistrazioni', function (req, res) {
+    res.sendFile(path.join(__dirname, '/js/BLancio/registrazioni_presenter.js'));
+});
+
 
 router.get('*', function(req, res){
     res.sendFile(path.join(__dirname, '/templates/BLancio/404.html'));

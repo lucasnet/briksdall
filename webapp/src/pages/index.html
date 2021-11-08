@@ -44,8 +44,28 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBLancio"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-euro-sign"></i>
+                    <span>BLancio</span>
+                </a>
+                <div id="collapseBLancio" class="collapse" aria-labelledby="headingBLancio"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">BLancio</h6>
+                        <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Registrazioni'});">Registrazioni</a>
+                        <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Bilancio'});">Bilancio</a>
+                        <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Scontrino'});">Scontrino</a>
+                        <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'AndamentoPrezzi'});">Andamento Prezzi</a>
+                        <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'PrevisioneFutura'});">Previsione Futura</a>
+                        <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Reports'});">Reports</a>
+                    </div>
+                </div>
+            </li>
 
-            
+            <hr class="sidebar-divider my-0">
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
@@ -55,7 +75,7 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">BLancio:</h6>
+                        <h6 class="collapse-header">BLancio</h6>
                         <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Gruppi'});">Gruppi</a>
                         <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Sottogruppi'});">Sottogruppi</a>
                         <a class="collapse-item" href="javascript:void(0);" onclick="router.Route({ id: 'Supermercati'});">Supermercati</a>
