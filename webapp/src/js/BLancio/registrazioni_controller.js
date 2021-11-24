@@ -1,6 +1,11 @@
 import { Base_Controller }         from "/BLancio/controller_base";
 import { Registrazioni_Model }     from "/BLancio/mRegistrazioni";
 import { Registrazioni_Presenter } from "/BLancio/pRegistrazioni";
+import { Risorse_Controller }      from "/BLancio/cRisorse";
+import { Gruppi_Controller }       from "/BLancio/cGruppi";
+import { Sottogruppi_Controller }  from "/BLancio/cSottogruppi";
+import { Filters_Controller }      from "/Filters/controller";
+
 
 //
 // Controller for Registrazioni process
@@ -11,6 +16,10 @@ export class Registrazioni_Controller{
     _auth           = null;     // {username : "", password : "" };
     _templates      = null;     // {modal_ok : "", modal_err : "", template : "", error : ""}
     _controllerBase = null;
+    _presenter      = null;
+    _risorse        = null;
+    _gruppi         = null;
+    _sottogruppi    = null;
 
 
     // Constructor. Set up initial values.
@@ -22,21 +31,42 @@ export class Registrazioni_Controller{
         this._templates = templates;
 
         this._controllerBase = new Base_Controller();
+        this._presenter = new Registrazioni_Presenter(this._templates);
     }
 
 
 
     // Public Section 
 
-    // Init. Entry point method. Initializes Gruppi process showing Gruppi list.
+
+    // Init. 
+    // Entry point method. Initializes Gruppi process showing Gruppi list.
     // Params:
     // - notifyDetail: delegate for Detail event (click on single element in the list)
     async Init(notifyDetail){
+        // risorse controller
+        // gruppi + sottogruppi model
+        this._risorse = new Risorse_Controller(this._auth, null);
+        this._gruppi = new Gruppi_Controller(this._auth, null);
+        this._sottogruppi = new Sottogruppi_Controller(this._auth, null);
+     
+        const response_risorse     = await this._risorse.GetList();
+        const response_gruppi      = await this._gruppi.GetList();
+        const response_sottogruppi = await this._sottogruppi.GetList();
         
-        const data = await this.GetList();
+        let responseResult = response_risorse.responseResult;
+        if (responseResult.codice == 0) responseResult = response_gruppi.responseResult;
+        if (responseResult.codice == 0) responseResult = response_sottogruppi.responseResult;
 
-        const presenter = new Registrazioni_Presenter(this._templates);
-        presenter.ShowList(data.responseResult, data.responseData, notifyDetail);
+        this._presenter.Init(responseResult,
+            response_risorse.responseData,
+            response_gruppi.responseData,
+            response_sottogruppi.responseData,
+            this);
+
+
+        const data = await this.GetList();
+        this._presenter.ShowList(data.responseResult, data.responseData, notifyDetail);
     }
 
     async GetList(){
@@ -51,8 +81,14 @@ export class Registrazioni_Controller{
         return {responseResult, responseData};
     }
 
-
+    async GetFilters(){
+        
+        const cFilters = new Filters_Controller(this._auth);
+        let filtersData = await cFilters.Get_BLancio();        
+    }
     
+
+
     // Private Section
 
     #getStructuredData(responserawdata){

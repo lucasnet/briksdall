@@ -7,6 +7,7 @@ const Routing_M1 = require('./src/router_m1');
 const Routing_M2 = require('./src/router_m2');
 const Routing_Common = require('./src/router_Common.js');
 const Routing_BLancio = require('./src/router_BLancio.js');
+const Routing_Filters = require('./src/router_Filters.js');
 const Routing_WebApi = require('./src/router_webapi.js');
 const path = require('path');
 
@@ -15,6 +16,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use('/Common', Routing_Common);
 app.use('/BLancio', Routing_BLancio);
+app.use('/Filters', Routing_Filters);
 app.use('/webapi',Routing_WebApi)
 app.use('/M1',Routing_M1);
 app.use('/M2',Routing_M2);

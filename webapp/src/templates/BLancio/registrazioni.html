@@ -178,7 +178,10 @@
                     <div class="my-2"></div>
                     <label class="small font-weight-bold" >Tipologia:</label>
                     <select id="cboTipologie" class="form-control input-sm">
-                    </select>
+                        <option selected="selected" value="0">&lt;Seleziona Tipologia&gt;</option>
+	                    <option value="1">Entrate</option>
+	                    <option value="2">Uscite</option>
+                   </select>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="my-2"></div>
@@ -211,15 +214,15 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Elenco Registrazioni</h6>
+    </div>
+    <div class="card-header py-3">
         <a href="#" class="btn btn-sm btn-primary btn-icon-split" id="btnNew">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
             <span class="text">Nuova Registrazione</span>
         </a>
-    </div>
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Elenco Registrazioni</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -237,17 +240,17 @@
                         <th></th>                    
                     </tr>
                 </thead>
-                <tfoot>
+                <tbody>
+                      
+                </tbody>
+                <!-- <tfoot>
                     <tr>
                         <th colspan="6" style="text-align:right">Totale</th>
                         <th></th>
                         <th></th>
                         <th></th>
                     </tr>
-                </tfoot>
-                <tbody>
-                      
-                </tbody>
+                </tfoot> -->
             </table>
         </div>
     </div>

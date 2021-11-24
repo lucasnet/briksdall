@@ -25,24 +25,40 @@ export class Registrazioni_Presenter{
 
 
     // public methods
+    async Init(responseResult,
+                risorse_responseData,
+                gruppi_responseData,
+                sottogruppi_responseData,
+                controller){
+           
+        
+        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.erro
+        let html_template = await this.#getData(template);
+        if (responseResult.codice != 0){
+            html_template = html_template.replace("{descrizione}", responseResult.descrizione);
+        }
+        $("#main_content").html(html_template);
+         
+        
+        this.#filterCboElements($("#cboRisorse")    , risorse_responseData,     "");
+        this.#filterCboElements($("#cboGruppi")     , gruppi_responseData,      "");
+        this.#filterCboElements($("#cboSottogruppi"), sottogruppi_responseData, "");
 
-    // ShowList. Shows Gruppi list.
+        const self = this;
+        $("#cboGruppi").change(function(){
+            const gruppo = $("#cboGruppi option:selected").text();
+            self.#filterCboElements($("#cboSottogruppi"),sottogruppi_responseData,gruppo);
+        });
+    
+    }
+
+    // ShowList. Shows Registrazioni list.
     // params:
     // - responseResult: web service response result (json format)
     // - responseData: web service response data (xml string format)
     // - notifyDetail: delegate for element "click" ("detail" request) 
     async ShowList(responseResult, responseData, notifyDetail){
        
-        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
-
-        let html_template = await this.#getData(template);
-
-        if (responseResult.codice != 0){
-            html_template = html_template.replace("{descrizione}", responseResult.descrizione);
-        }
-
-        $("#main_content").html(html_template);
-
         if (responseResult.codice == 0){
             $('#dataTable').DataTable({
                 data: responseData,
@@ -92,10 +108,11 @@ export class Registrazioni_Presenter{
                     },
                     {
                         // Valore Entrate
+                        "name": "entrate",
                         "targets": 6,
                         "orderable": false,
                         "render": function ( data, type, row ) {
-                            if (row.codice_tipologia == '1') return '<h6>' + row.valore + '</h6>';
+                            if (row.codice_tipologia == '1') return '<h6>€ ' + row.valore + '</h6>';
                             return '';
                         }
                     },
@@ -104,7 +121,7 @@ export class Registrazioni_Presenter{
                         "targets": 7,
                         "orderable": false,
                         "render": function ( data, type, row ) {
-                            if (row.codice_tipologia == '2') return '<h6>' + row.valore + '</h6>';
+                            if (row.codice_tipologia == '2') return '<h6>€ ' + row.valore + '</h6>';
                             return '';
                         }
                     },
@@ -125,40 +142,41 @@ export class Registrazioni_Presenter{
                                     }
                     }
                 ],
-                "order": [[ 1, "asc" ]],
-                "footerCallback": function ( row, data, start, end, display ) {
-                    var api = this.api(), data;
-         
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '')*1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
-         
-                    // Total over all pages
-                    const total = api
-                        .column( 7 )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Total over this page
-                    const pageTotal = api
-                        .column( 7, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-         
-                    // Update footer
-                    $( api.column( 7 ).footer() ).html(
-                        '$'+pageTotal +' ( $'+ total +' total)'
-                    );
-                }
-                  
+                "order": [[ 1, "asc" ]]
+
+            //     "footerCallback": function ( row, data, start, end, display ) {
+            //         var api = this.api(), columns = [6, 7];
+
+            //         // Remove the formatting to get integer data for summation
+            //         var intVal = function ( i ) {
+            //             return typeof i === 'string' ?
+            //                 i.replace(/[\$,]/g, '')*1 :
+            //                 typeof i === 'number' ?
+            //                 i : 0;
+            //         };
+                    
+            //         // total over all pages
+            //         const total = api
+            //             .column( 6 )
+            //             .data()
+            //             .reduce( function (a, b) {
+            //                 return intVal(a) + intVal(b);
+            //             }, 0 );
+                    
+            //         // Total over this page
+            //         const pageTotal = api
+            //             .column( 6, { page: 'current'} )
+            //             .data()
+            //             .reduce( function (a, b) {
+            //                 return intVal(a) + intVal(b);
+            //             }, 0 );
+
+            //              // Update footer
+            //      $( api.column( 6 ).footer() ).html(
+            //          '$'+pageTotal +' ( $'+ total +' total)'
+            //      );
+            //  }
+            
             });
 
             $('#dataTable tbody').on('click', 'td button', function (){
@@ -167,6 +185,7 @@ export class Registrazioni_Presenter{
             $('#btnNew').on('click', function (){
                 notifyDetail(0);
             });
+
         }
     }
 
@@ -264,7 +283,32 @@ export class Registrazioni_Presenter{
 
 
 
-    // Private Section
+        // private methods
+
+        // Fill the drop down Object with Elements.
+        // Elements are filtered with Filter
+        #filterCboElements(object, elements, filter){
+            object.empty();
+    
+            // first element (empty)
+            let opt = document.createElement("option");
+            opt.value = 0;          // codice
+            opt.innerHTML = "";     // descrizione                                
+            object.append(opt);
+    
+            elements.forEach(function(element)
+                {                                
+                    let opt = document.createElement("option");
+                    opt.value= element[0];          // codice
+                    opt.innerHTML = element[1];     // descrizione
+                
+                    // then append it to the select element
+                    const toadd = (filter == "") || (element[2] == filter);
+                    if (toadd) object.append(opt);
+                });
+            return;
+        }
+    
 
     async #getData(url = '') {       
         const response = await fetch(url);
