@@ -156,7 +156,7 @@ export class Registrazioni_Presenter{
                                 }
                 }
             ],
-            "order": [[ 1, "asc" ]]
+            "order": [[ 1, "desc" ]]
 
         //     "footerCallback": function ( row, data, start, end, display ) {
         //         var api = this.api(), columns = [6, 7];

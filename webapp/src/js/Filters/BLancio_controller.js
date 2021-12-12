@@ -71,7 +71,7 @@ export class Filters_Controller{
     async Set_Default(){
 
         const model = new Filters_Model(this._auth);
-        let rawData = await model.Default(data);
+        let rawData = await model.Default();
         const responseResult = this._controllerBase.GetResponseResult(rawData);
 
         return {responseResult};

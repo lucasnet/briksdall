@@ -70,7 +70,9 @@ export class Registrazioni_Controller{
                 notifySaveFilters : function(data){
                                         self.#notifySaveFilters(auth, data);
                                     }, 
-                notifyRemoveFilters : this.#notifyRemoveFilters 
+                notifyRemoveFilters : function(){
+                                        self.#notifyRemoveFilters(auth);
+                                    }
             },
             this);
 
@@ -179,9 +181,24 @@ export class Registrazioni_Controller{
 
         return {responseResult};
     }
-    #notifyRemoveFilters(data){
-        
+
+    // notifyRemoveFilters.
+    // Notifies Remove filters, aka set filters to default (from presenter)
+    // Parameters;
+    // - auth : authorization (username, password) structure
+    // Return value:
+    // - responseResult : operation result in json format (code, description)
+    async #notifyRemoveFilters(auth){
+        const cFilters = new Filters_Controller(auth);
+        const {responseResult} = await cFilters.Set_Default();
+
+        const data1 = await this.GetList();
+        this._presenter.ShowList(data1.responseResult, data1.responseData, this.#notifyDetail);
+
+        return {responseResult};
     }
+
+    
     #notifyDetail(data){
         
     }
