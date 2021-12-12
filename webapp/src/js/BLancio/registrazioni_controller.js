@@ -40,12 +40,13 @@ export class Registrazioni_Controller{
 
 
     // Init. 
-    // Entry point method. Initializes Gruppi process showing Gruppi list.
+    // Entry point method. 
+    // Initializes entire process showing Registrazioni list filtered by filters set, and showing filter values.
     // Params:
     // - notifyDetail: delegate for Detail event (click on single element in the list)
     async Init(notifyDetail){
-        // risorse controller
-        // gruppi + sottogruppi model
+
+        // step 1 : initializes risorse + gruppi + sottogruppi controller
         this._risorse = new Risorse_Controller(this._auth, null);
         this._gruppi = new Gruppi_Controller(this._auth, null);
         this._sottogruppi = new Sottogruppi_Controller(this._auth, null);
@@ -58,17 +59,39 @@ export class Registrazioni_Controller{
         if (responseResult.codice == 0) responseResult = response_gruppi.responseResult;
         if (responseResult.codice == 0) responseResult = response_sottogruppi.responseResult;
 
+        const auth = this._auth;
+        const self = this;
+        // init presenter object
         this._presenter.Init(responseResult,
             response_risorse.responseData,
             response_gruppi.responseData,
             response_sottogruppi.responseData,
+            { 
+                notifySaveFilters : function(data){
+                                        self.#notifySaveFilters(auth, data);
+                                    }, 
+                notifyRemoveFilters : this.#notifyRemoveFilters 
+            },
             this);
 
 
+        // step 2 : set Regitrazioni list and sends data to presenter
         const data = await this.GetList();
         this._presenter.ShowList(data.responseResult, data.responseData, notifyDetail);
+
+        // step 3 : set Filters list and sends data to presenter object
+        const filtersdata = await this.GetFilters();
+        this._presenter.ShowFilters(filtersdata.responseResult, filtersdata.responseData);
+
     }
 
+    // GetList.
+    // Get Registrazioni list data.
+    // Parameters:
+    //
+    // Return value.
+    // - responseResult : result of web service call
+    // - responseData : data values in a json format.
     async GetList(){
         
         const model = new Registrazioni_Model(this._auth);
@@ -81,10 +104,20 @@ export class Registrazioni_Controller{
         return {responseResult, responseData};
     }
 
+
+    // GetFilters.
+    // Get Filters data values.
+    // Parameters:
+    //
+    // Return value.
+    // - responseResult : result of web service call
+    // - responseData : data values in a json format.
     async GetFilters(){
         
         const cFilters = new Filters_Controller(this._auth);
-        let filtersData = await cFilters.Get_BLancio();        
+        const {responseResult, responseData} = await cFilters.Get_BLancio();
+
+        return {responseResult, responseData};
     }
     
 
@@ -128,6 +161,29 @@ export class Registrazioni_Controller{
         });
 
         return loe;
+    }
+
+    // notifySaveFilters.
+    // Notifies Save filters (from presenter)
+    // Parameters;
+    // - data : data to save (from presenter) in json format
+    // - auth : authorization (username, password) structure
+    // Return value:
+    // - responseResult : operation result in json format (code, description)
+    async #notifySaveFilters(auth, data){
+        const cFilters = new Filters_Controller(auth);
+        const {responseResult} = await cFilters.Set_BLancio(data);
+
+        const data1 = await this.GetList();
+        this._presenter.ShowList(data1.responseResult, data1.responseData, this.#notifyDetail);
+
+        return {responseResult};
+    }
+    #notifyRemoveFilters(data){
+        
+    }
+    #notifyDetail(data){
+        
     }
 }
 

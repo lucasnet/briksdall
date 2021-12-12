@@ -111,7 +111,13 @@ router.all("/blancio.asmx/Registrazione_Dettaglio_DEL", function(req, res) {
 });
 
 // Filters
+router.all("/Filtri.asmx/SetFiltriDefault", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
 router.all("/Filtri.asmx/BLancio_GET", function(req, res) {    
+  apiProxy.web(req, res, {target: urlWebAPI});
+});
+router.all("/Filtri.asmx/BLancio_SET", function(req, res) {    
   apiProxy.web(req, res, {target: urlWebAPI});
 });
 

@@ -45,7 +45,39 @@ export class Filters_Controller{
         return {responseResult, responseData};
     }
 
-    
+    // BLancio_Set
+    // Set BLancio filter values to Filters web service.
+    // Parameters:
+    // - data : data filter values in json format.
+    // Return value. 
+    // json composed by:
+    // - responseResult : result of web service call.
+    async Set_BLancio(data){
+
+        const model = new Filters_Model(this._auth);
+        let rawData = await model.BLancio_SET(data);
+        const responseResult = this._controllerBase.GetResponseResult(rawData);
+
+        return {responseResult};
+    }
+
+    // Set_Default
+    // Set default filter values to Filters web service.
+    // Parameters:
+    // 
+    // Return value. 
+    // json composed by:
+    // - responseResult : result of web service call.
+    async Set_Default(){
+
+        const model = new Filters_Model(this._auth);
+        let rawData = await model.Default(data);
+        const responseResult = this._controllerBase.GetResponseResult(rawData);
+
+        return {responseResult};
+    }
+
+
     
     // Private Section
 
@@ -56,7 +88,8 @@ export class Filters_Controller{
     // Return value:
     // - data in a json format (name, value)
     #getStructuredData(responserawdata){
-        const xmlDoc = $.parseXML(responserawdata);        
+        const rawdata = "<data>" + responserawdata + "</data>";
+        const xmlDoc = $.parseXML(rawdata);        
                 
         let applicati = 0;
         let registrazioni_da_GG = "";
@@ -77,12 +110,12 @@ export class Filters_Controller{
             elements.forEach(function (element) {
                 switch (element.nodeName.toLowerCase()){
                     case 'applicati'                       : applicati                       = element.textContent; break;
-                    case 'registrazioni_da_GG'             : registrazioni_da_GG             = element.textContent; break;
-                    case 'registrazioni_da_MM'             : registrazioni_da_MM             = element.textContent; break;
-                    case 'registrazioni_da_AA'             : registrazioni_da_AA             = element.textContent; break;
-                    case 'registrazioni_a_GG'              : registrazioni_a_GG              = element.textContent; break;
-                    case 'registrazioni_a_MM'              : registrazioni_a_MM              = element.textContent; break;
-                    case 'registrazioni_a_AA'              : registrazioni_a_AA              = element.textContent; break;
+                    case 'registrazioni_da_gg'             : registrazioni_da_GG             = element.textContent; break;
+                    case 'registrazioni_da_mm'             : registrazioni_da_MM             = element.textContent; break;
+                    case 'registrazioni_da_aa'             : registrazioni_da_AA             = element.textContent; break;
+                    case 'registrazioni_a_gg'              : registrazioni_a_GG              = element.textContent; break;
+                    case 'registrazioni_a_mm'              : registrazioni_a_MM              = element.textContent; break;
+                    case 'registrazioni_a_aa'              : registrazioni_a_AA              = element.textContent; break;
                     case 'registrazioni_codicegruppo'      : registrazioni_codicegruppo      = element.textContent; break;
                     case 'registrazioni_codicerisorsa'     : registrazioni_codicerisorsa     = element.textContent; break;
                     case 'registrazioni_codicesottogruppo' : registrazioni_codicesottogruppo = element.textContent; break;
