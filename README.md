@@ -1,2 +1,2 @@
 # Briksdall
-Briksdall web app using React
+Briksdall web app
