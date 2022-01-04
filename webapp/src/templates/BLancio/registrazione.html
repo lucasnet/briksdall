@@ -1,0 +1,91 @@
+
+
+<h1 class="h3 mb-2 text-gray-800">REGISTRAZIONI</h1>
+<p class="mb-4">Gestione delle registrazioni di bilancio.</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Modifica Registrazione</h6>
+    </div>
+    <div class="card-body">
+        <div class="panel panel-default row">
+            <div class="col-md-3">
+                <div id="datepicker"></div>
+            </div>
+            <div class="col-md-6 bg-light">
+                <div class="panel panel-default row">
+                    <div class="col-md-6">
+                        <label for="txtCodice">Codice Registrazione</label>
+                        <input type="text" class="form-control input-sm" id="txtCodice" disabled />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Risorsa</label>
+                        <select id="cboRisorse" class="form-control input-sm"></select>
+                    </div>
+                </div>
+                <div class="panel panel-default row">
+                    <div class="col-md-6">
+                        <label>Gruppo</label>
+                        <select id="cboGruppi" class="form-control input-sm"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Sottogruppo</label>
+                        <select id="cboSottogruppi" class="form-control input-sm"></select>
+                    </div>
+                </div>
+                <div class="panel panel-default row">
+                    <div class="col-md-6">
+                        <label>Importo</label>
+                        <div class="input-group">
+                            <div class="input-group-text input-sm">€</div>
+                            <input type="number" class="form-control input-sm" id="txtImportoINT" placeholder="Importo" maxlength="7" />
+                            <div class="input-group-text input-sm">,</div>
+                            <input type="text" class="form-control input-sm" id="txtImportoDEC" placeholder="00" maxlength="2" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Tipologia</label>
+                        <select id="cboTipologie" class="form-control input-sm">
+                            <option selected="selected" value="0">&lt;Seleziona Tipologia&gt;</option>
+	                        <option value="1">Entrate</option>
+	                        <option value="2">Uscite</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default row">
+                    <div class="col-md-12">
+                        <label>Note</label>
+                        <textarea id="txtNote" style="resize: none;" class="form-control input-sm" placeholder="Inserire le note relative a questa registrazione" rows="7" cols="1" maxlength="200"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer py-3">
+        <a href="#" class="btn btn-primary btn-icon-split" id="btnSave">
+            <span class="icon text-white-50">
+                <i class="fas fa-save"></i>
+            </span>
+            <span class="text">Salva</span>
+        </a>
+        <a href="#" class="btn btn-warning btn-icon-split" id="btnDelete">
+            <span class="icon text-white-50">
+                <i class="fas fa-trash"></i>
+            </span>
+            <span class="text">Elimina</span>
+        </a>  
+        <a href="#" class="btn btn-secondary btn-icon-split" id="btnBack">
+            <span class="icon text-white-50">
+                <i class="fas fa-backward"></i>
+            </span>
+            <span class="text">Ritorna</span>
+        </a>       
+    </div>
+</div>       
+
+
+<div id="modal_confirm"></div> 
+<div id="modal_ok"></div> 
+<div id="modal_error"></div> 

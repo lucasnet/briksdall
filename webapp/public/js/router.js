@@ -84,6 +84,14 @@ class Router {
             "modal_err"     : "/Common/modal_error",
             "controller"    : "/BLancio/cRegistrazioni",
             "error"         : "/error"
+        },
+        "Registrazioni_Detail":{
+            "template"      : "/BLancio/registrazione",
+            "modal_confirm" : "/Common/modal_confirm",
+            "modal_ok"      : "/Common/modal_ok",
+            "modal_err"     : "/Common/modal_error",
+            "controller"    : "/BLancio/cRegistrazione",
+            "error"         : "/error"
         }
     };
 
@@ -156,6 +164,12 @@ class Router {
                 controller = new Registrazioni_Controller(this.auth, route_elements);
                 rawData = await controller.Init(this.#notify_BLancio_RegistrazioniDetail);
                 break;
+
+            case "Registrazioni_Detail":
+                let {Registrazione_Controller} = await import(route_elements.controller);
+                controller = new Registrazione_Controller(this.auth, route_elements, params.element);
+                rawData = await controller.Init(this.#notify_BLancio_RegistrazioniList);
+                break;
     
             default:
                 break;
@@ -189,6 +203,9 @@ class Router {
     }
     #notify_BLancio_RegistrazioniDetail(id){
         router.Route({id: "Registrazioni_Detail", element: id})
+    }
+    #notify_BLancio_RegistrazioniList(){
+        router.Route({id: "Registrazioni"})
     }
 
 }

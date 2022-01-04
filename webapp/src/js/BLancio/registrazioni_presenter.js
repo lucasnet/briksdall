@@ -69,7 +69,7 @@ export class Registrazioni_Presenter{
     
         // assign events to filter buttons click
         $("#btnApplyFilter").click(function(){
-            const data = self.#getData4Save();
+            const data = self.#getFilters4Save();
             events.notifySaveFilters(data);
         });
         $("#btnRemoveFilter").click(events.notifyRemoveFilters);
@@ -145,7 +145,7 @@ export class Registrazioni_Presenter{
                     "orderable": false,
                     "render": function ( data, type, row ) {                                        
                                     const edit = '<button class="btn btn-info btn-icon-split" '
-                                                    + 'id="' + row[0] + '"> '                                                    
+                                                    + 'id="' + row.codice + '"> '                                                    
                                                     + '<span class="icon text-white-50">'
                                                     + '<i class="fas fa-edit"></i>'
                                                     + '</span>'
@@ -194,6 +194,90 @@ export class Registrazioni_Presenter{
         });
 
     }
+
+    // InitDetail.
+    // Initializes graphic object in the view.
+    // Parameters:
+    // - responseResult : response data in json format
+    // - risorse_responseData : "risorse" data elements in json format
+    // - gruppi_responseData : "gruppi" data elements in json format
+    // - sottogruppi_responseData : "sottogruppi" data elements in json format
+    // - events : events delegates for 
+    //            - notifySave
+    //            - notifyRemove
+    // - controller : controller object
+    // Return value:
+    // - none
+    async InitDetail(responseResult,
+                    risorse_responseData,
+                    gruppi_responseData,
+                    sottogruppi_responseData,
+                    events,                 
+                    controller)
+    {
+   
+        // download html template
+        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
+        let html_template = await this.#getData(template);
+        if (responseResult.codice != 0){
+            html_template = html_template.replace("{descrizione}", responseResult.descrizione);
+        }
+        $("#main_content").html(html_template);
+
+        let html_modalconfirm = await this.#getData(this._modalconfirm);
+        $("#modal_confirm").html(html_modalconfirm);
+
+
+        // fill filters drop downs
+        this.#filterCboElements($("#cboRisorse")    , risorse_responseData,     "");
+        this.#filterCboElements($("#cboGruppi")     , gruppi_responseData,      "");
+        this.#filterCboElements($("#cboSottogruppi"), sottogruppi_responseData, "");
+
+        // link "gruppi" dropdown with "sottogruppi" dropdown
+        const self = this;
+        $("#cboGruppi").change(function(){
+            const gruppo = $("#cboGruppi option:selected").text();
+            self.#filterCboElements($("#cboSottogruppi"),sottogruppi_responseData,gruppo);
+        });
+
+
+
+        // link "action" buttons
+        $("#btnSave").on("click", function (){
+            events.save(controller, self.#getData4Saving());
+        });
+
+        $("#btnDelete").on("click", function (){
+
+            $('#confermModalTitle').text('Sei sicuro di voler eliminare questo gruppo?');
+            $('#confermModal').modal('show');
+            $('#doNotConferm').text('No');
+            $('#confermIt').text('Si');
+
+            $('#confermIt').off('click');
+
+            $('#confermIt').click(function () {
+
+                events.delete(
+                                sender,
+                                $("#txtCodice").val()
+                             );
+
+            });
+        });
+
+        $("#btnBack").on("click", function (){
+            events.list();
+        });
+
+        // date picker
+        $('#datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            language: "it",
+            todayHighlight: true
+        });
+    }
+
 
     // ShowList.
     // Shows Registrazioni list, links every row with a "notify detail" event, add a "new" button.
@@ -258,58 +342,22 @@ export class Registrazioni_Presenter{
     // params:
     // - responseResult: web service response result (json format)
     // - responseData: web service response data (xml string format)
-    // - events: list of delegates (save, delete, list)
-    // - sender: object owner
-    async ShowDetail(responseResult, responseData, events, sender){
-
-        let html_modalconfirm = await this.#getData(this._modalconfirm);
-
-        const template = (responseResult.codice == 0) ? this._templates.template : this._templates.error;
-
-        let html_template = await this.#getData(template);
-
-        if (responseResult.codice != 0){
-            html_template = html_template.replace("{descrizione}", responseResult.descrizione);
-        }
-
-        $("#main_content").html(html_template);
-        $("#modal_confirm").html(html_modalconfirm);
+    async ShowDetail(responseResult, responseData){
 
         if (responseResult.codice == 0){
-            $("#txtDescrizione").val(responseData.descrizione);
             $("#txtCodice").val(responseData.codice);
+            $("#cboRisorse").val(responseData.codice_risorsa);
+            $("#cboSottogruppi").val(responseData.codice_sottogruppo);
+            $("#txtImportoINT").val(responseData.importo_INT);
+            $("#txtImportoDEC").val(responseData.importo_DEC);
+            $("#cboTipologie").val(responseData.codice_tipologia);
+            $("#txtNote").val(responseData.note);
 
-            // events
-            $("#btnSave").on("click", function (){
-                events.save(sender,
-                            {                             
-                             codice      : $("#txtCodice").val(), 
-                             descrizione : $("#txtDescrizione").val( )
-                            });
-            });
+            const row_reg_aa = responseData.data_registrazione_AA;
+            const row_reg_mm = (responseData.data_registrazione_MM - 1);
+            const row_reg_gg = responseData.data_registrazione_GG;
+            $('#datepicker').datepicker("setDate", new Date(row_reg_aa, row_reg_mm, row_reg_gg));
 
-            $("#btnDelete").on("click", function (){
-
-                $('#confermModalTitle').text('Sei sicuro di voler eliminare questo gruppo?');
-                $('#confermModal').modal('show');
-                $('#doNotConferm').text('No');
-                $('#confermIt').text('Si');
-
-                $('#confermIt').off('click');
-
-                $('#confermIt').click(function () {
-
-                    events.delete(
-                                    sender,
-                                    $("#txtCodice").val()
-                                 );
-
-                });
-            });
-
-            $("#btnBack").on("click", function (){
-                events.list();
-            });
         }
     }
 
@@ -348,20 +396,20 @@ export class Registrazioni_Presenter{
 
 
 
-        // private methods
+    // private methods
 
-        // Fill the drop down Object with Elements.
-        // Elements are filtered with Filter
-        #filterCboElements(object, elements, filter){
-            object.empty();
+    // Fill the drop down Object with Elements.
+    // Elements are filtered with Filter
+    #filterCboElements(object, elements, filter){
+        object.empty();
     
-            // first element (empty)
-            let opt = document.createElement("option");
-            opt.value = 0;          // codice
-            opt.innerHTML = "";     // descrizione                                
-            object.append(opt);
+        // first element (empty)
+        let opt = document.createElement("option");
+        opt.value = 0;          // codice
+        opt.innerHTML = "";     // descrizione                                
+        object.append(opt);
     
-            elements.forEach(function(element)
+        elements.forEach(function(element)
                 {                                
                     let opt = document.createElement("option");
                     opt.value= element[0];          // codice
@@ -371,28 +419,29 @@ export class Registrazioni_Presenter{
                     const toadd = (filter == "") || (element[2] == filter);
                     if (toadd) object.append(opt);
                 });
-            return;
-        }
+            
+        return;
+    }
     
-        // getData4Save.
-        // Get filter data for saving filters.
-        // Parameters:
-        //
-        // Return value:
-        // filters data in json format.
-        #getData4Save(){
-            const registrazioni_da_AA = $('#cboAnniDA').val();
-            const registrazioni_da_MM = $('#cboMesiDA').val();
-            const registrazioni_da_GG = $('#cboGiorniDA').val();
-            const registrazioni_a_AA  = $('#cboAnniA').val();
-            const registrazioni_a_MM  = $('#cboMesiA').val();
-            const registrazioni_a_GG  = $('#cboGiorniA').val();
-            const registrazioni_codicegruppo      = $('#cboGruppi').val();
-            const registrazioni_codicerisorsa     = $('#cboRisorse').val();
-            const registrazioni_codicesottogruppo = $('#cboSottogruppi').val();
-            const registrazioni_codicetipologia   = $('#cboTipologie').val();
+    // getFilters4Save.
+    // Get filter data for saving filters.
+    // Parameters:
+    //
+    // Return value:
+    // filters data in json format.
+    #getFilters4Save(){
+        const registrazioni_da_AA = $('#cboAnniDA').val();
+        const registrazioni_da_MM = $('#cboMesiDA').val();
+        const registrazioni_da_GG = $('#cboGiorniDA').val();
+        const registrazioni_a_AA  = $('#cboAnniA').val();
+        const registrazioni_a_MM  = $('#cboMesiA').val();
+        const registrazioni_a_GG  = $('#cboGiorniA').val();
+        const registrazioni_codicegruppo      = $('#cboGruppi').val();
+        const registrazioni_codicerisorsa     = $('#cboRisorse').val();
+        const registrazioni_codicesottogruppo = $('#cboSottogruppi').val();
+        const registrazioni_codicetipologia   = $('#cboTipologie').val();
     
-            return {
+        return {
                 registrazioni_da_GG,
                 registrazioni_da_MM,
                 registrazioni_da_AA,
@@ -403,24 +452,61 @@ export class Registrazioni_Presenter{
                 registrazioni_codicesottogruppo,
                 registrazioni_codicerisorsa,
                 registrazioni_codicetipologia
-            };
-        }
+        };
+    }
 
-        // addRows.
-        // add rows to datatable.
-        // Parameters:
-        // - table : datatable object
-        // - responseData : raw data to add
-        // Return value:
-        //
-        #addRows(table, responseData){
+    // addRows.
+    // add rows to datatable.
+    // Parameters:
+    // - table : datatable object
+    // - responseData : raw data to add
+    // Return value:
+    //
+    #addRows(table, responseData){
+        table.clear();
 
-            table.clear();
-    
-            responseData.forEach(function(element){                    
-                table.row.add( element ).draw();
-            });        
-        }
+        responseData.forEach(function(element){                    
+            table.row.add( element ).draw();
+        });        
+    }
+
+    // getData4Saving.
+    // Get data for saving.
+    // Parameters:
+    //
+    // Return value:
+    // data in json format.
+    #getData4Saving(){
+        const codice = $("#txtCodice").val();
+        const codice_risorsa = $("#cboRisorse").val();
+        const codice_sottogruppo = $("#cboSottogruppi").val();
+        const importo_INT = $("#txtImportoINT").val();
+        const importo_DEC = $("#txtImportoDEC").val();
+        const codice_tipologia = $("#cboTipologie").val();
+        const note = $("#txtNote").val();
+        const selected_date = $('#datepicker').datepicker('getDate');
+	    let data_registrazione_GG = '';
+	    let data_registrazione_MM = '';
+	    let data_registrazione_AA = '';
+	    if (selected_date != null) {
+	        data_registrazione_AA = selected_date.getFullYear().toString();
+	        data_registrazione_MM = (selected_date.getMonth() + 1).toString();
+	        data_registrazione_GG = selected_date.getDate().toString();
+	    }
+        
+        return {
+            codice,
+            codice_risorsa,
+            codice_sottogruppo,
+            importo_INT,
+            importo_DEC,
+            codice_tipologia,
+            note,
+            data_registrazione_GG,
+            data_registrazione_MM,
+            data_registrazione_AA
+        };
+    }
 
 
     async #getData(url = '') {       

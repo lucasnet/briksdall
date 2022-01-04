@@ -68,10 +68,10 @@ export class Registrazioni_Controller{
             response_sottogruppi.responseData,
             { 
                 notifySaveFilters : function(data){
-                                        self.#notifySaveFilters(auth, data);
+                                        self.#notifySaveFilters(auth, data, notifyDetail);
                                     }, 
                 notifyRemoveFilters : function(){
-                                        self.#notifyRemoveFilters(auth);
+                                        self.#notifyRemoveFilters(auth, notifyDetail);
                                     }
             },
             this);
@@ -170,14 +170,15 @@ export class Registrazioni_Controller{
     // Parameters;
     // - data : data to save (from presenter) in json format
     // - auth : authorization (username, password) structure
+    // - notifyDetail : delegate for "Detail" event
     // Return value:
     // - responseResult : operation result in json format (code, description)
-    async #notifySaveFilters(auth, data){
+    async #notifySaveFilters(auth, data, notifyDetail){
         const cFilters = new Filters_Controller(auth);
         const {responseResult} = await cFilters.Set_BLancio(data);
 
         const data1 = await this.GetList();
-        this._presenter.ShowList(data1.responseResult, data1.responseData, this.#notifyDetail);
+        this._presenter.ShowList(data1.responseResult, data1.responseData, notifyDetail);
 
         return {responseResult};
     }
@@ -186,21 +187,18 @@ export class Registrazioni_Controller{
     // Notifies Remove filters, aka set filters to default (from presenter)
     // Parameters;
     // - auth : authorization (username, password) structure
+    // - notifyDetail : delegate for "Detail" event
     // Return value:
     // - responseResult : operation result in json format (code, description)
-    async #notifyRemoveFilters(auth){
+    async #notifyRemoveFilters(auth, notifyDetail){
         const cFilters = new Filters_Controller(auth);
         const {responseResult} = await cFilters.Set_Default();
 
         const data1 = await this.GetList();
-        this._presenter.ShowList(data1.responseResult, data1.responseData, this.#notifyDetail);
+        this._presenter.ShowList(data1.responseResult, data1.responseData, notifyDetail);
 
         return {responseResult};
     }
 
-    
-    #notifyDetail(data){
-        
-    }
 }
 

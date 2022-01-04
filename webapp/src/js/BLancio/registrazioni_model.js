@@ -7,8 +7,8 @@ export class Registrazioni_Model{
 
     // fields
     _urlList   = '/webapi/blancio.asmx/Registrazioni_Elenco';
-    _urlDetail = '/webapi/blancio.asmx/Registrazioni_Dettaglio_GET';
-    _urlSet    = '/webapi/blancio.asmx/Registrazioni_Dettaglio_SET';
+    _urlDetail = '/webapi/blancio.asmx/Registrazione_Dettaglio_GET';
+    _urlSet    = '/webapi/blancio.asmx/Registrazione_Dettaglio_SET';
     _urlDelete = '/webapi/blancio.asmx/Registrazioni_Dettaglio_DEL';
     _username  = '';
     _password  = '';
@@ -82,7 +82,15 @@ export class Registrazioni_Model{
                           "</auth>" +
                           "<data>" +
                             "<codice>" + data.codice + "</codice>" +
-                            "<descrizione>" + encodeURIComponent(data.descrizione) + "</descrizione>" +                  
+                            "<data_registrazione_GG>" + data.data_registrazione_GG + "</data_registrazione_GG>" +
+                            "<data_registrazione_MM>" + data.data_registrazione_MM + "</data_registrazione_MM>" +
+                            "<data_registrazione_AA>" + data.data_registrazione_AA + "</data_registrazione_AA>" +
+                            "<codice_sottogruppo>" + data.codice_sottogruppo + "</codice_sottogruppo>" + 
+                            "<codice_tipologia>" + data.codice_tipologia + "</codice_tipologia>" +
+                            "<importo_INT>" + data.importo_INT + "</importo_INT>" +
+                            "<importo_DEC>" + data.importo_DEC + "</importo_DEC>" +
+                            "<codice_risorsa>" + data.codice_risorsa + "</codice_risorsa>" +
+                            "<note>" + encodeURIComponent(data.note) + "</note>" +                  
                           "</data>" +
                         "</request>";
         return strXml;
