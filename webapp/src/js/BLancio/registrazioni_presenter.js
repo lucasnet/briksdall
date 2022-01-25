@@ -82,60 +82,60 @@ export class Registrazioni_Presenter{
                     "visible": false,
                     "searchable": false,
                     "render": function ( data, type, row ) {
-                        return '<h6>' + row.codice + '</h6>';
+                        return '<p style="font-size: small">' + row.codice + '</p>';
                     }
                 },
+                // Data
                 {
-                    // Data
                     "targets": 1,
                     "render": function ( data, type, row ) {
-                        return '<h6>' + row.data + '</h6>';
+                        return '<p style="font-size: small">' + row.data + '</p>';
                     }
                 },
+                // Gruppo
                 {
-                    // Gruppo
                     "targets": 2,
                     "render": function ( data, type, row ) {
-                        return '<h6>' + row.gruppo + '</h6>';
+                        return '<p style="font-size: small">' + row.gruppo + '</p>';
                     }
                 },
+                // Sottogruppo
                 {
-                    // Sottogruppo
                     "targets": 3,
                     "render": function ( data, type, row ) {
-                        return '<h6>' + row.sottogruppo + '</h6>';
+                        return '<p style="font-size: small">' + row.sottogruppo + '</p>';
                     }
                 },
+                // Risorsa
                 {
-                    // Risorsa
                     "targets": 4,
                     "render": function ( data, type, row ) {
-                        return '<h6>' + row.risorsa + '</h6>';
+                        return '<p style="font-size: small">' + row.risorsa + '</p>';
                     }
                 },
+                // Note
                 {
-                    // Note
                     "targets": 5,
                     "render": function ( data, type, row ) {
-                        return '<h6>' + row.note + '</h6>';
+                        return '<p style="font-size: small">' + row.note + '</p>';
                     }
                 },
+                // Valore Entrate
                 {
-                    // Valore Entrate
                     "name": "entrate",
                     "targets": 6,
                     "orderable": false,
                     "render": function ( data, type, row ) {
-                        if (row.codice_tipologia == '1') return '<h6>€ ' + row.valore + '</h6>';
+                        if (row.codice_tipologia == '1') return '<p style="text-align: right; font-size: small">€ ' + row.valore + '</p>';
                         return '';
                     }
                 },
+                // Valore Uscite
                 {
-                    // Valore Uscite
                     "targets": 7,
                     "orderable": false,
                     "render": function ( data, type, row ) {
-                        if (row.codice_tipologia == '2') return '<h6>€ ' + row.valore + '</h6>';
+                        if (row.codice_tipologia == '2') return '<p style="text-align: right; font-size: small">€ ' + row.valore + '</p>';
                         return '';
                     }
                 },
